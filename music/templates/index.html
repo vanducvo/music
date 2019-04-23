@@ -111,7 +111,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									</div>
 								</div>
 								<div class="col-md-7 app-image">
-									<img src="images/apps.png" alt="">
+									<img src="{% static 'images/apps.png' %}" alt="">
 								</div>
 								<div class="clearfix"></div>
 							</div>
@@ -305,7 +305,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
 				<div class="clearfix"></div>
 			</div>
-
+			<!-- content for extends -->
+			{% block content %}
+			
+			{% endblock content %}
 		</div>
 		<!--body wrapper start-->
 
