@@ -1,0 +1,59 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+    {% if user.is_authenticated%}
+        <div class="container">
+        <h2><b style="color:#125888">Danh Sách Bài Hát</b></h2>
+        <p style="color:#FF1111"><i>#Nhập tên bài hát, ca sĩ, thể loại để tìm kiếm :</i></p>  
+        <br>
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+        <br>
+        <p style="color:#FF1111"><i>#Danh sách nhạc mà bạn đã tải lên :</i></p>
+        <table class="table" method="get">
+            <thead>
+            <tr>
+                <th style="color:#125888">Tên Bài Hát</th>
+                <th style="color:#125888">Ca Sĩ</th>
+                <th style="color:#125888">Thể loại</th>
+            </tr>
+            </thead>
+            
+            <tbody id="myTable">
+            {% for song in object_list %}
+            <tr>
+                <td><input type=checkbox name ="check" value="{{song.id}}">{{song.name}}</td>
+                <td>{{song.artist}}</td>
+                <td>{{song.genre}}</td>
+            </tr>      
+            {% endfor %}
+            </tbody>
+            
+        </table>
+        <h3>Lưu ý:</h3>
+        <p>Nếu bạn chưa tạo ca sĩ, hãy nhấn <b>tạo ca sĩ</b> </p>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-8"></div> <!-- Make free space -->
+            <div class="col-md-4">
+                <a href="song"><button type="button" class="btn btn-primary"> >>Thêm<< </button> </a>
+                <a href="artist"><button type="button" class="btn btn-info"> >>Tạo ca sĩ<< </button> </a>
+                <button type="button" class="btn btn-success">>>Xóa<<</button>
+                <button type="button" class="btn btn-info">>>Sửa<<</button>
+            </div>
+        </div>
+    <script>
+    $(document).ready(function(){
+    $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    });
+    </script>
+    {% else %}              <!--Page error-->
+    {% endif %}
+
+{% endblock content %}
