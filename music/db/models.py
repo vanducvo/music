@@ -58,7 +58,7 @@ class BlocklistSong(models.Model):
     blocklist = models.ForeignKey(Blocklist, on_delete = models.DO_NOTHING)
     song = models.ForeignKey(Song, on_delete = models.DO_NOTHING)
 
-#Procedure Artist Relation
-class ArtistOfProcedure(models.Model):
+#Producer Artist Relation
+class ArtistOfProducer(models.Model):
     artist = models.ForeignKey(Artist, on_delete = models.DO_NOTHING)
-    procedure = models.ForeignKey(User, on_delete = models.DO_NOTHING)
+    producer = models.ForeignKey(User, on_delete = models.DO_NOTHING)
