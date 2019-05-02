@@ -12,7 +12,8 @@ class Song(models.Model):
     title = models.CharField(max_length = 200)
     image = models.ImageField(upload_to = 'image')
     audio = models.FileField(upload_to='audio')
-    lyric = models.CharField(max_length = 1000)
+    lyric = models.TextField()
+    genre = models.CharField(max_length = 50)
     producer =  models.ForeignKey(User, on_delete = models.DO_NOTHING)
 
 #Artist Entity
@@ -42,6 +43,7 @@ class Messenge(models.Model):
     user = models.ForeignKey(User, on_delete = models.DO_NOTHING)
     room = models.ForeignKey(RoomListen, on_delete = models.DO_NOTHING)
     content = models.CharField(max_length=1000)
+    timestamp = models.TimeField(auto_now_add=True)
 
 #Song In Playist Relation
 class SongInPlayist(models.Model):
