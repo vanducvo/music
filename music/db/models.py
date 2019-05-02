@@ -30,7 +30,7 @@ class Blocklist(models.Model):
 class RoomListen(models.Model):
     name = models.CharField(max_length = 100)
     topic = models.CharField(max_length = 50)
-    password = models.CharField(max_length=256)
+    password = models.CharField(max_length = 256)
 
 #Playist Entity
 class Playist(models.Model):
