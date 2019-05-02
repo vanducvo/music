@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'homepage',
+    'db',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +78,7 @@ WSGI_APPLICATION = 'music.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'musicapp',
+        'NAME': 'dbmusic',
         'USER': 'music',
         'PASSWORD': 'yvplcP46FWg9mOAd!',
         'HOST': 'localhost',
@@ -128,4 +129,4 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-AUTH_USER_MODEL = 'homepage.User'
+AUTH_USER_MODEL = 'db.User'
