@@ -1,0 +1,238 @@
+{% extends "index.html" %}
+{% block header %}
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:200,400');
+
+    /* Colors */
+    :root {
+        --green: #00bc84;
+        --light-grey: #dce8e8;
+        --dark-grey: #4a575b;
+    }
+
+    .wrapper {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        color: var(--dark-grey);
+    }
+
+    .chat-item_image {
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        margin: 0 1em;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        align-self: flex-end;
+    }
+
+    .message-body input[type="text"]:focus {
+        outline: none;
+    }
+
+    .wrapper {
+        width: 500px;
+        margin: 0 auto;
+        padding: 0 1em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        float: right;
+    }
+
+    .chat-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1em;
+        overflow: hidden;
+    }
+
+    .chat-item:nth-of-type(even) {
+        flex-direction: row-reverse;
+    }
+
+    .chat-item_body {
+        padding: 1em 2em;
+        border: 1px solid var(--light-grey);
+        border-radius: 40px;
+        border-bottom-left-radius: 0;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        align-self: flex-end;
+    }
+
+    .chat-item_body.alt {
+        max-width: 380px;
+        background-color: var(--light-grey);
+        border-bottom-left-radius: 40px;
+        border-bottom-right-radius: 0;
+        word-wrap: break-word;
+    }
+
+    .new-message {
+        margin-top: 4em;
+        margin-bottom: 2rem;
+        display: flex;
+        border: 1px solid var(--green);
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .message-body {
+        border: 0;
+        padding: 1em 2rem;
+    }
+
+    .message-button {
+        background-color: var(--green);
+        border: none;
+        padding: 0 1em;
+        color: var(--light-grey);
+        cursor: pointer;
+    }
+
+    .chat-interface {
+        height: 420px;
+        overflow-y: hidden;
+        scroll-behavior: auto;
+    }
+
+    .chat-interface:hover {
+        overflow-y: auto;
+    }
+
+    .tittle-head.listenroom {
+        float: left;
+    }
+</style>
+{% endblock header %}
+
+{% block content %}
+<div id="page-wrapper">
+
+    <div class="inner-content single">
+        <!--/music-right-->
+        <div>
+            <div class="tittle-head listenroom">
+                <h3 class="tittle">Nghe Nhạc Chung <span class="new">Trial</span></h3>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <section class="chat-interface">
+                <!-- Chat transaction item 1 -->
+                <figure class="chat-item">
+                    <img class="chat-item_image" src="https://randomuser.me/api/portraits/women/34.jpg" alt="">
+                    <figcaption class="chat-item_body">
+                        Hey, where are u?
+                    </figcaption>
+                </figure>
+                <!-- Chat transaction item 2 -->
+                <figure class="chat-item">
+                    <img class="chat-item_image" src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+                    <figcaption class="chat-item_body alt">
+                        Hey, finishing up work. U?
+                    </figcaption>
+                    <!-- Chat transaction item 3 -->
+                </figure>
+                <figure class="chat-item">
+                    <img class="chat-item_image" src="https://randomuser.me/api/portraits/women/34.jpg" alt="">
+                    <figcaption class="chat-item_body">
+                        Just left the building :) Are we still on for dinner?
+                    </figcaption>
+                </figure>
+                <!-- Chat transaction item 4 -->
+                <figure class="chat-item">
+                    <img class="chat-item_image" src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
+                    <figcaption class="chat-item_body alt">
+                        Sure, how about 7:30?
+                    </figcaption>
+                </figure>
+            </section>
+            <section class="new-message">
+                <input type="text" class="message-body" placeholder="Enter your message">
+                <input type="submit" class="message-button" value="Send">
+            </section>
+        </div>
+        <!-- /agileits -->
+        <div class="clearfix"> </div>
+        <!--//music-right-->
+    </div>
+    {% endblock content %}
+
+    {% block script %}
+    <script>
+        var roomName = {{room_name_json}};
+
+        var chatSocket = new WebSocket(
+            'ws://' + window.location.host +
+            '/ws/roomlisten/' + roomName + '/');
+
+        chatSocket.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            var message = data['message'];
+            const chatInterface = document.querySelector(".chat-interface");
+
+            // Create chat item & set styles
+            const chatItem = document.createElement("figure");
+            chatItem.classList.add("chat-item");
+            chatItem.style.flexDirection = "row-reverse";
+
+            // Create chat message image
+            const chatImg = document.createElement("img");
+            chatImg.setAttribute("src", "https://randomuser.me/api/portraits/men/32.jpg");
+            chatImg.setAttribute("class", "chat-item_image");
+            // Create & style chat message body
+            const chatBody = document.createElement("figcaption");
+            chatBody.classList.add("chat-item_body", "alt");
+            chatItem.style.alignSelf = "flex-end";
+            chatBody.textContent = message + '\n';
+
+            // Append chat parts to chat item
+            chatItem.append(chatImg, chatBody);
+
+            // Append chat item to chat interface
+            chatInterface.appendChild(chatItem);
+
+            // Clear inputs
+            chatMessage.value = "";
+            $(".chat-interface").animate({
+                scrollTop: $(document).height()
+            }, "fast");
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+
+        const chatBtn = document.querySelector(".message-button"),
+            chatMessage = document.querySelector(".message-body");
+
+        chatMessage.addEventListener("keydown", function (event) {
+            if (event.keyCode === 13) {
+                chatBtn.click();
+            }
+        })
+
+        chatBtn.addEventListener("click", function () {
+            if (chatMessage.value === "") {
+                alert("Please write your message.")
+            } else {
+                sendChatMessage();
+            }
+        })
+
+        function sendChatMessage() {
+            var message = chatMessage.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            chatMessage.value
+            // Clear inputs
+            chatMessage.value = "";
+
+        }
+    </script>
+    {% endblock script %}

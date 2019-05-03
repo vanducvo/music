@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'homepage',
     'db',
+    'roomlisten',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -70,8 +72,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'music.wsgi.application'
-
-
+ASGI_APPLICATION = 'music.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 

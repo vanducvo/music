@@ -35,7 +35,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- //lined-icons -->
 	<!-- Meters graphs -->
 	<script src="{% static 'js/jquery-2.1.4.js' %}"></script>
-
+	{% block header %}
+	
+	{% endblock header %}
 
 </head>
 <!-- /w3layouts-agile -->
@@ -265,7 +267,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<div class="col-md-4 login-pop">
 
 							{% if user.is_authenticated%}
-							<div id="loginpop"> <a href="logout/" id="logoutButton"><span>Logout<i
+							<div id="loginpop"> <a href="/logout/" id="logoutButton"><span>Logout<i
 											class="arrow glyphicon glyphicon-chevron-right"></i></span></a>
 							</div>
 							{% else %}
@@ -276,7 +278,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<div id="loginBox">
 
 									<form id="loginForm" name="loginForm" method="post"
-										onsubmit="return validateLoginForm()" action='login/'>
+										onsubmit="return validateLoginForm()" action='/login/'>
 										{% csrf_token %}
 										<div id="alertlogin_placeholder"></div>
 										<fieldset id="body">
@@ -446,6 +448,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			return true;
 		}
 	</script>
+	{% block script %}
+	
+	{% endblock script %}
 </body>
 
 </html>
