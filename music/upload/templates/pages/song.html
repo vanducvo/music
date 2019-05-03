@@ -77,10 +77,10 @@ input[type=submit]:hover {
         {% csrf_token %}
         <div class="row">
           <div class="col-25">
-            <label for="nameid">Tên Bài Hát</label>
+            <label for="titleid">Tên Bài Hát</label>
           </div>
           <div class="col-75">
-            <input type="text" id="nameid" name="name" >
+            <input type="text" id="titleid" name="title" >
           </div>
         </div>
         <div class="row">
@@ -97,9 +97,15 @@ input[type=submit]:hover {
           </div>
           <div class="col-75">
             <select id="genreid" name="genre">
-              <option value="nhac_tre">Nhạc trẻ</option>
-              <option value="bolero">Nhạc bolero</option>
-              <option value="nhac_xua">Nhạc xưa</option>
+              <option value="">Chọn Thể Loại</option>
+              <option value="Nhạc trẻ">Nhạc trẻ</option>
+              <option value="Nhạc trữ tình">Nhạc trữ tình</option>
+              <option value="Nhạc cách mạng">Nhạc cách mạng</option>
+              <option value="Nhạc không lời">Nhạc không lời</option>
+              <option value="Nhạc quê hương">Nhạc quê hương</option>
+              <option value="Rap/Hip Hop">Rap/Hip Hop</option>
+              <option value="Rock Việt">Rock Việt</option>
+              <option value="Dance Việt">Dance Việt</option>
             </select>
           </div>
         </div>
@@ -113,10 +119,18 @@ input[type=submit]:hover {
         </div>
         <div class="row">
           <div class="col-25">
+            <label for="imageid">Image</label> 
+          </div>
+          <div class="col-75">
+            <input type="file" value="Browser" name="image" id="imageid">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
             <label for="lyricid">Lời bài hát</label>
           </div>
           <div class="col-75">
-            <textarea id="lyricid" name="lyrics" placeholder="Write something.." style="height:200px"></textarea>
+            <textarea id="lyricid" name="lyric" placeholder="Write something.." style="height:200px"></textarea>
           </div>
         </div>
         <div class="row">

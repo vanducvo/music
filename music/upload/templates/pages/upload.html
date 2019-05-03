@@ -20,11 +20,11 @@
             </thead>
             
             <tbody id="myTable">
-            {% for song in object_list %}
+            {% for artistsingsong in object_list %}
             <tr>
-                <td><input type=checkbox name ="check" value="{{song.id}}">{{song.name}}</td>
-                <td>{{song.artist}}</td>
-                <td>{{song.genre}}</td>
+                <td><input type=checkbox name ="check" value="{{song.id}}">{{artistsingsong.song.title}}</td>
+                <td>{{artistsingsong.artist.name}}</td>
+                <td>{{artistsingsong.song.genre}}</td>
             </tr>      
             {% endfor %}
             </tbody>
