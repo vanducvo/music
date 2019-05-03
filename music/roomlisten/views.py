@@ -8,7 +8,8 @@ import json
 @login_required
 def RoomListen(request, room_name):
     return render(request, 'roomlisten/roomlisten.html', {
-        'room_name_json': mark_safe(json.dumps(room_name))
+        'room_name_json': mark_safe(json.dumps(room_name)),
+        'username':mark_safe(json.dumps(request.user.username)),
     })
 
 @login_required

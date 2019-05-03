@@ -42,7 +42,7 @@ class Playist(models.Model):
 class Messenge(models.Model):
     user = models.ForeignKey(User, on_delete = models.DO_NOTHING)
     room = models.ForeignKey(RoomListen, on_delete = models.DO_NOTHING)
-    content = models.CharField(max_length=1000)
+    content = models.TextField()
     timestamp = models.TimeField(auto_now_add=True)
 
 #Song In Playist Relation
