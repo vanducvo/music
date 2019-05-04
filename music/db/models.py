@@ -53,8 +53,8 @@ class SongInPlayist(models.Model):
 
 #Artist Sing Song Relation
 class ArtistSingSong(models.Model):
-   artist = models.ForeignKey(Artist, on_delete = models.DO_NOTHING)
-   song = models.ForeignKey(Song, on_delete = models.DO_NOTHING)
+   artist = models.ForeignKey(Artist, on_delete = models.CASCADE)
+   song = models.ForeignKey(Song, on_delete = models.CASCADE)
 
 #Block list Song Relation
 class BlocklistSong(models.Model):

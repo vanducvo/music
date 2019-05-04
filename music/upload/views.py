@@ -25,6 +25,7 @@ def Add_song(request):
                 artistsingsong.song = song
                 if models.Artist.objects.filter(name = request.POST['artist']):
                         artistsingsong.artist = models.Artist.objects.get(name = request.POST['artist'])
+                        
                         artistsingsong.save()
                 
                 return redirect('/upload')
@@ -49,3 +50,27 @@ class SongListView(ListView):
         def get_context_data(self,**kwargs):
                 context = super().get_context_data(**kwargs)
                 return context
+
+def Edit(request, pk):
+        return render(request,'pages/edit.html', {'pk': pk})
+
+def X(request):
+        obj = models.Song.objects.filter(id__exact=int(request.POST['pk']))[0]
+        obj.title = request.POST['title']
+        obj.image = request.FILES['image']
+        obj.genre = request.POST['genre']
+        obj.lyric = request.POST['lyric']
+        obj.audio = request.FILES['audio']
+        
+        artistsingsong = models.ArtistSingSong()
+        artistsingsong.song = obj
+        if models.Artist.objects.filter(name = request.POST['artist']):
+                artistsingsong.artist = models.Artist.objects.get(name = request.POST['artist'])
+                obj.save()
+                artistsingsong.save()
+        return redirect('/upload')
+
+def Delete(request, pk):
+        obj = models.Song.objects.filter(id__exact=pk)[0]
+        obj.delete()
+        return redirect('/upload')
