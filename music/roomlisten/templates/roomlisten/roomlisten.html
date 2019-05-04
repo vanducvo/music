@@ -47,6 +47,7 @@
         align-items: center;
         margin-bottom: 1em;
         overflow: hidden;
+        width: 500px;
     }
 
     .chat-item:nth-of-type(even) {
@@ -122,34 +123,6 @@
 
         <div class="wrapper">
             <section class="chat-interface">
-                <!-- Chat transaction item 1 -->
-                <figure class="chat-item">
-                    <img class="chat-item_image" src="https://randomuser.me/api/portraits/women/34.jpg" alt="">
-                    <figcaption class="chat-item_body">
-                        Hey, where are u?
-                    </figcaption>
-                </figure>
-                <!-- Chat transaction item 2 -->
-                <figure class="chat-item">
-                    <img class="chat-item_image" src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
-                    <figcaption class="chat-item_body alt">
-                        Hey, finishing up work. U?
-                    </figcaption>
-                    <!-- Chat transaction item 3 -->
-                </figure>
-                <figure class="chat-item">
-                    <img class="chat-item_image" src="https://randomuser.me/api/portraits/women/34.jpg" alt="">
-                    <figcaption class="chat-item_body">
-                        Just left the building :) Are we still on for dinner?
-                    </figcaption>
-                </figure>
-                <!-- Chat transaction item 4 -->
-                <figure class="chat-item">
-                    <img class="chat-item_image" src="https://randomuser.me/api/portraits/men/32.jpg" alt="">
-                    <figcaption class="chat-item_body alt">
-                        Sure, how about 7:30?
-                    </figcaption>
-                </figure>
             </section>
             <section class="new-message">
                 <input type="text" class="message-body" placeholder="Enter your message">
@@ -238,7 +211,7 @@
             // Create chat item & set styles
             const chatItem = document.createElement("figure");
             chatItem.classList.add("chat-item");
-            chatItem.style.flexDirection = "row-reverse";
+            
 
             // Create chat message image
             const chatImg = document.createElement("img");
@@ -248,8 +221,10 @@
             const chatBody = document.createElement("figcaption");
             if(author === username){
                 chatBody.classList.add("chat-item_body", "alt");
+                chatItem.style.flexDirection = "row-reverse";
             }else{
                 chatBody.classList.add("chat-item_body");
+                chatItem.style.flexDirection = "row";
             }
             
             chatItem.style.alignSelf = "flex-end";
