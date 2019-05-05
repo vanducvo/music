@@ -63,6 +63,7 @@
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         align-self: flex-end;
         word-wrap: break-word;
+        white-space: pre-line;
     }
 
     .chat-item_body.alt {
@@ -116,7 +117,7 @@
         <!--/music-right-->
         <div>
             <div class="tittle-head listenroom">
-                <h3 class="tittle">Nghe Nhạc Chung <span class="new">Trial</span></h3>
+                <h3 class="tittle">Nghe Nhạc Chung <span class="new"></span></h3>
                 <div class="clearfix"> </div>
             </div>
         </div>
@@ -145,7 +146,9 @@
         var chatSocket = new ReconnectingWebSocket(
             'ws://' + window.location.host +
             '/ws/roomlisten/chat/' + roomName + '/');
-
+        $(document).ready(function(){
+            $('.new').text("Phòng: " + roomName);
+        });
         chatSocket.onopen = function (e) {
             fetchMessages();
         };
@@ -229,7 +232,7 @@
             }
             
             chatItem.style.alignSelf = "flex-end";
-            chatBody.textContent = message + '\n';
+            chatBody.textContent = message + '\n\n' + 'from: ' + author +'\n';
 
             // Append chat parts to chat item
             chatItem.append(chatImg, chatBody);
