@@ -9,18 +9,21 @@ class User(AbstractUser):
 
 #Song Entity
 class Song(models.Model):
+    GENRE_TYPES = (('n','Nhạc trẻ'),('b','Nhạc trữ tình'),('c','Nhạc cách mạng'),('k','Nhạc không lời'),('q','Nhạc quê hương'),('h','Rap/Hip Hop'),('r','Rock Việt'),('d','Dance Việt'))
     title = models.CharField(max_length = 200)
-    image = models.ImageField(upload_to = 'image')
+    image = models.ImageField(upload_to ='image')
     audio = models.FileField(upload_to='audio')
     lyric = models.TextField()
     genre = models.CharField(max_length = 50)
     producer =  models.ForeignKey(User, on_delete = models.DO_NOTHING)
+    genre = models.CharField(max_length = 15, choices = GENRE_TYPES, default ='other')
 
 #Artist Entity
 class Artist(models.Model):
     GENDER_TYPES = (('m','male'), ('f','female'), ('o','other'))
-    name = models.CharField(max_length = 100)
-    gender = models.CharField(max_length = 6, choices = GENDER_TYPES, default ='other')
+    name = models.CharField(max_length = 100, default= 'No Name')
+    gender = models.CharField(max_length = 6, choices = GENDER_TYPES, default ='orther')
+    introduc = models.TextField(default="No information")
 
 #Block list Entity
 class Blocklist(models.Model):
@@ -28,6 +31,7 @@ class Blocklist(models.Model):
 
 #RoomListen
 class RoomListen(models.Model):
+    user = models.ForeignKey(User, on_delete = models.DO_NOTHING)
     name = models.CharField(max_length = 100)
     topic = models.CharField(max_length = 50)
     password = models.CharField(max_length = 256)
@@ -43,7 +47,7 @@ class Messenge(models.Model):
     user = models.ForeignKey(User, on_delete = models.DO_NOTHING)
     room = models.ForeignKey(RoomListen, on_delete = models.DO_NOTHING)
     content = models.TextField()
-    timestamp = models.TimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
 #Song In Playist Relation
 class SongInPlayist(models.Model):
@@ -52,8 +56,8 @@ class SongInPlayist(models.Model):
 
 #Artist Sing Song Relation
 class ArtistSingSong(models.Model):
-    artist = models.ForeignKey(Artist, on_delete = models.DO_NOTHING)
-    song = models.ForeignKey(Song, on_delete = models.DO_NOTHING)
+   artist = models.ForeignKey(Artist, on_delete = models.CASCADE)
+   song = models.ForeignKey(Song, on_delete = models.CASCADE)
 
 #Block list Song Relation
 class BlocklistSong(models.Model):
@@ -64,3 +68,4 @@ class BlocklistSong(models.Model):
 class ArtistOfProducer(models.Model):
     artist = models.ForeignKey(Artist, on_delete = models.DO_NOTHING)
     producer = models.ForeignKey(User, on_delete = models.DO_NOTHING)
+

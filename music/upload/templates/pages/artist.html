@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+</style>
+</head>
+<body bgcolor = "#222222">
+{% if user.is_authenticated %}
+<h2 style="color: #ffff22"><center><b>Thông Tin Ca Sĩ<center><b></h2>
+
+<div class="container">
+  <form action="add/" name="Artistform" id="Artistformid" method="POST">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-25">
+        <label for="nameid">Tên Ca Sĩ</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="nameid" name="name" >
+      </div>
+    </div>
+    <div class="row">
+          <div class="col-25">
+            <label for="genderid">Giới Tính</label>
+          </div>
+          <div class="col-75">
+            <select id="genderid" name="gender">
+							<option value="">Chọn Giới Tính</option>
+							<option value="female">Nữ</option>
+            	<option value="male">Nam</option>
+							<option value="other">Khác</option>
+						</select>
+          </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="introducid">Giới thiệu</label>
+      </div>
+      <div class="col-75">
+        <textarea id="introducid" name="introduc" placeholder="Write something.." style="height:200px"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <input type="submit" value="Submit" id="Addbutton">
+    </div>
+  </form>
+</div>
+{%endif%}
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+</style>
+</head>
+<body bgcolor = "#222222">
+{% if user.is_authenticated %}
+    <script>
+      var x = document.URL()
+      var y = x.length()
+      var pk = x[y-1]
+      alert(pk) 
+    </script>
+    <h2 style="color: #ffff22"><center><b>Thông Tin Bài Hát<center><b></h2>
+
+    <div class="container">
+      <form action="/upload/edit/x/" name="Editform" id="Editformid" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+        <p><b>Note:</b>ID là số cuối cùng nằm trên url.</p>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="id">ID</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="id" name="pk" >
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="titleid">Tên Bài Hát</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="titleid" name="title" >
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label >Danh Sách Ca sĩ</label>
+          </div>
+          <div class="col-75">
+            <select>
+            {% for artist in object_list%}
+              <option > {{artist.name}}</option>
+            {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="artistid">Ca Sĩ</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="artistid" name="artist" >
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="genreid">Thể loại</label>
+          </div>
+          <div class="col-75">
+            <select id="genreid" name="genre">
+              <option value="">Chọn Thể Loại</option>
+              <option value="Nhạc trẻ">Nhạc trẻ</option>
+              <option value="Nhạc trữ tình">Nhạc trữ tình</option>
+              <option value="Nhạc cách mạng">Nhạc cách mạng</option>
+              <option value="Nhạc không lời">Nhạc không lời</option>
+              <option value="Nhạc quê hương">Nhạc quê hương</option>
+              <option value="Rap/Hip Hop">Rap/Hip Hop</option>
+              <option value="Rock Việt">Rock Việt</option>
+              <option value="Dance Việt">Dance Việt</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="audioid">Audio</label> 
+          </div>
+          <div class="col-75">
+            <input type="file" value="Browser" name="audio" id="audioid">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="imageid">Image</label> 
+          </div>
+          <div class="col-75">
+            <input type="file" value="Browser" name="image" id="imageid">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="lyricid">Lời bài hát</label>
+          </div>
+          <div class="col-75">
+            <textarea id="lyricid" name="lyric" placeholder="Write something.." style="height:200px"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <input type="submit" value="Save" id="Editbutton">
+        </div>
+        {% comment %} {%endif%} {% endcomment %}
+        {% comment %} {%endfor%} {% endcomment %}
+      </form>
+    </div>
+{% endif %}
+</body>
+</html>

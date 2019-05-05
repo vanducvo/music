@@ -1,0 +1,63 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+    {% if user.is_authenticated%}
+        <div class="container">
+        <h2><b style="color:#125888">Danh Sách Bài Hát</b></h2>
+        <p style="color:#FF1111"><i>#Nhập tên bài hát, ca sĩ, thể loại để tìm kiếm :</i></p>  
+        <br>
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+        <br>
+        <p style="color:#FF1111"><i>#Danh sách nhạc mà bạn đã tải lên :</i></p>
+        <table class="table" method="get">
+            <thead>
+            <tr>
+                <th style="color:#125888">Tên Bài Hát</th>
+                <th style="color:#125888">Ca Sĩ</th>
+                <th style="color:#125888">Thể loại</th>
+                <th style="color:#125888">Chỉnh Sửa</th>
+                <th style="color:#125888">Xóa</th>
+            </tr>
+            </thead>
+            
+            <tbody id="myTable">
+            {% for artistsingsong in object_list %}
+                {%if artistsingsong.song.producer == user%}
+                    <tr>
+                        <td>{{artistsingsong.song.title}}</td>
+                        <td>{{artistsingsong.artist.name}}</td>
+                        <td>{{artistsingsong.song.genre}}</td>
+                        <td><a href = "{% url 'edit_song' pk=artistsingsong.song.id %}"><button class="btn btn-success">Chỉnh Sửa</button></td>
+                        <td><a href = "{% url 'delete_song' pk=artistsingsong.song.id %}"><button class="btn btn-info">Xóa</button></td>
+                    </tr>     
+                {%endif%}
+            {% endfor %}
+            </tbody>
+           
+        </table>
+        <h3>Lưu ý:</h3>
+        <p>Nếu bạn chưa tạo ca sĩ, hãy nhấn <b>tạo ca sĩ</b> </p>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-9"></div> <!-- Make free space -->
+            <div class="col-md-3">
+                <a href="song"><button type="button" class="btn btn-primary"> >>Thêm<< </button> </a>
+                <a href="artist"><button type="button" class="btn btn-info"> >>Tạo ca sĩ<< </button> </a>
+            </div>
+        </div>
+    <script>
+    $(document).ready(function(){
+    $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+    });
+    </script> 
+    {% else %}              <!--Page error-->
+    {% endif %}
+
+{% endblock content %}

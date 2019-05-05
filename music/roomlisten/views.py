@@ -40,11 +40,13 @@ def Create_Room(request):
     roomtopic = request.POST['topic']
     roompassword = request.POST['password']
     room = models.RoomListen.objects.filter(name__exact=roomname)
+    createuser = models.User.objects.filter(username__exact=request.user.username)[0]
     if(list(room) != []):
         return HttpResponse(status=417)
 
     models.RoomListen.objects.create(
         name = roomname,
+        user = createuser,
         topic = roomtopic,
         password = make_password(roompassword)
     )
