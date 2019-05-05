@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 from db import models
+from django.contrib.auth.hashers import make_password
 import json
 
 # Create your views here.
@@ -32,6 +33,22 @@ def LoadMoreMessage(request):
     }
 
     return HttpResponse(json.dumps(content), content_type='aplication/json')
+
+@login_required
+def Create_Room(request):
+    roomname = request.POST['roomname']
+    roomtopic = request.POST['topic']
+    roompassword = request.POST['password']
+    room = models.RoomListen.objects.filter(name__exact=roomname)
+    if(list(room) != []):
+        return HttpResponse(status=417)
+
+    models.RoomListen.objects.create(
+        name = roomname,
+        topic = roomtopic,
+        password = make_password(roompassword)
+    )
+    return HttpResponse(status=200)
 
 
 def messages_to_json(messages):

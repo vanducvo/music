@@ -16,32 +16,16 @@
                                 <li><a class="goog" href="#"><i></i>Nghe Nhạc</a></li>
                                 <li><a class="linkin" href="#"><i></i>Hãy Làm Người Kết Nối</a></li>
                             </ul>
-                            <div id="alert_placeholder"></div>
+                            <!--<div id="alert_placeholder"></div>-->
                         </div>
                         <div class="sign-right">
-                            <form name="signupform" id="signupformid" method="POST">
-                                <h3>Đăng Kí Tài Khoản</h3>
-                                <input id="lnameid" type="text" name="lname" value="Nhập Họ" onfocus="this.value = '';"
-                                    onblur="if (this.value == '') {this.value = 'Nhập Họ';}" required="">
-                                <input id="fnameid" type="text" name="fname" value="Nhập Tên" onfocus="this.value = '';"
-                                    onblur="if (this.value == '') {this.value = 'Nhập Tên';}" required="">
-                                <select id="genderid" name="gender">
-                                    <option value="">Chọn Giới Tính</option>
-                                    <option value="female">Nữ</option>
-                                    <option value="male">Nam</option>
-                                    <option value="other">Khác</option>
-                                </select>
-                                <select id="roleid" name="role">
-                                    <option value="">Chọn Loại Người Dùng</option>
-                                    <option value="user">Người dùng thông thường</option>
-                                    <option value="publisher">Nhà sản xuất</option>
-                                </select>
-                                <input type="text" id="emailid" name="email" value="Nhập Email"
+                            <form name="createroomform" id="createroomformid" method='POST'>
+                                <input type="text" id="roomnameid" name="roomname" value="Nhập Tên Phòng"
                                     onfocus="this.value = '';"
-                                    onblur="if (this.value == '') {this.value = 'Nhập Email';}" required="">
-                                <input type="text" id="usernameid" name="username" value="Nhập Username"
+                                    onblur="if (this.value == '') {this.value = 'Nhập Tên Phòng';}" required="">
+                                <input type="text" id="topicid" name="topic" value="Nhập Chủ Đề"
                                     onfocus="this.value = '';"
-                                    onblur="if (this.value == '') {this.value = 'Nhập Username';}" required="">
+                                    onblur="if (this.value == '') {this.value = 'Nhập Chủ Đề';}" required="">
                                 <input type="password" id="roompasswordid" name="roompassword" value="Nhập Password Phòng"
                                     onfocus="this.value = '';"
                                     onblur="if (this.value == '') {this.value = 'Nhập Password Phòng';}" required="">
@@ -275,3 +259,42 @@
 </div>
 </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+ $(document).on('submit', '#createroomformid', function(e){
+    e.preventDefault();
+    var roomname = document.forms["createroomformid"]["roomname"].value;
+    var roompassword = document.forms["createroomformid"]["roompassword"].value;
+    var topic = document.forms["createroomformid"]["topic"].value;
+    if (roomname === 'Nhập Tên Phòng' || !/^[A-Za-z][A-Za-z0-9]+$/.test(roomname)) {
+		alert("Tên phòng không hợp lệ");
+		return false;
+	}
+	if (roomname === 'Nhập Password Phòng' || !/.{5}.+/.test(roompassword)) {
+		alert("Password không hợp lệ");
+		return false;
+	}
+    if (topic === 'Nhập Chủ Đề'|| !/[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(topic)){
+        alert("Chủ đề  không hợp lệ");
+		return false;
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/roomlisten/create/',
+        data:{
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            roomname: roomname,
+            topic: topic,
+            password: roompassword,
+        },
+        success: function(e){
+            alert('Tạo thành công.');
+        },
+        error: function(e){
+            alert('Phòng đã tồn tại');
+        },
+    });
+ });
+</script>
+{% endblock script %}
