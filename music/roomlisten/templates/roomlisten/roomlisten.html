@@ -55,20 +55,20 @@
     }
 
     .chat-item_body {
+        max-width: 380px;
         padding: 1em 2em;
         border: 1px solid var(--light-grey);
         border-radius: 40px;
         border-bottom-left-radius: 0;
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         align-self: flex-end;
+        word-wrap: break-word;
     }
 
     .chat-item_body.alt {
-        max-width: 380px;
         background-color: var(--light-grey);
         border-bottom-left-radius: 40px;
         border-bottom-right-radius: 0;
-        word-wrap: break-word;
     }
 
     .new-message {
@@ -140,10 +140,11 @@
     <script>
         var username = {{username}};
         var roomName = {{room_name_json}};
-
+        var n = 1;
+        var offset = 0;
         var chatSocket = new ReconnectingWebSocket(
             'ws://' + window.location.host +
-            '/ws/roomlisten/' + roomName + '/');
+            '/ws/roomlisten/chat/' + roomName + '/');
 
         chatSocket.onopen = function (e) {
             fetchMessages();
@@ -155,14 +156,14 @@
             if(data['command'] === 'messages'){
                 data['messages'].reverse();
                 for(let i = 0; i < data['messages'].length; i++)
-                createMessege(data['messages'][i])
+                createMessege(data['messages'][i], 0)
             }else if (data['command'] === 'new_messages' ){
-                createMessege(data['message']);
-                
-                $(".chat-interface").animate({
+                createMessege(data['message'], 0);
+                offset = offset + 1;
+            }
+            $(".chat-interface").animate({
                 scrollTop: $(document).height()
                 }, "fast");
-            }
         };
 
         chatSocket.onclose = function (e) {
@@ -203,8 +204,8 @@
             chatSocket.send(JSON.stringify({'command': 'fetch_messages' }));
         }
 
-        function createMessege(data){
-            var author = data['author']
+        function createMessege(data, type){
+            var author = data['author'];
             var message = data['message'];
             const chatInterface = document.querySelector(".chat-interface");
 
@@ -234,10 +235,42 @@
             chatItem.append(chatImg, chatBody);
 
             // Append chat item to chat interface
-            chatInterface.appendChild(chatItem);
+            if(type === 0){
+                chatInterface.appendChild(chatItem);
+                chatMessage.value = "";
+            }
+            else{
+                chatInterface.prepend(chatItem)
+            }
 
             // Clear inputs
-            chatMessage.value = "";
         };
+        
+        $(".chat-interface").scroll(function() {
+            if($('.chat-interface').scrollTop() === 0){
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: '/roomlisten/loadmore/loadmore/',
+                    data:{
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        time: n,
+                        align: offset,
+                        room: roomName,
+                    },
+                    success: function(json){
+                        var scrollh = 0;
+                        for(let i = 0; i < json['messages'].length; i++){
+                            createMessege(json['messages'][i], 1);
+                            scrollh = scrollh + $(".chat-item_body")[0].offsetHeight;
+                        }
+                        $(".chat-interface").animate({
+                            scrollTop: scrollh
+                            }, "fast");
+                    }
+                });
+                n = n + 1;
+            }
+        });
     </script>
-    {% endblock script %}
+{% endblock script %}

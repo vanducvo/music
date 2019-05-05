@@ -12,7 +12,7 @@ class ChatConsumer(WebsocketConsumer):
             'messages': self.messages_to_json(message) 
         }
         self.send_message(content)
-    
+
 
     def new_messages(self, data):
         author = data['from']
