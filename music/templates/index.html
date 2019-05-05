@@ -49,10 +49,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 			<!--logo and iconic logo start-->
 			<div class="logo">
-				<h1><a href="#">Mosai<span>c</span></a></h1>
+				<h1><a href="{% url 'home' %}">Mosai<span>c</span></a></h1>
 			</div>
 			<div class="logo-icon text-center">
-				<a href="#">M </a>
+				<a href="{% url 'home' %}">M </a>
 			</div>
 			<!-- /w3l-agile -->
 			<!--logo and iconic logo end-->
@@ -60,7 +60,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 				<!--sidebar nav start-->
 				<ul class="nav nav-pills nav-stacked custom-nav">
-					<li class="active"><a href=""><i class="lnr lnr-home"></i><span>Home</span></a></li>
+					<li class="active"><a href="{% url 'home' %}"><i class="lnr lnr-home"></i><span>Home</span></a></li>
 					<li><a href="radio.html"><i class="camera"></i> <span>Radio</span></a></li>
 					<li><a href="#" data-toggle="modal" data-target="#myModal1"><i
 								class="fa fa-th"></i><span>Apps</span></a></li>
@@ -107,8 +107,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									<p>Download and Avail Special Songs Videos and Audios.</p>
 									<div class="app-devices">
 										<h5>Gets the app from</h5>
-										<a href="#"><img src="images/1.png" alt=""></a>
-										<a href="#"><img src="images/2.png" alt=""></a>
+										<a href="#"><img src="{% static 'images/1.png' %}" alt=""></a>
+										<a href="#"><img src="{% static 'images/2.png' %}" alt=""></a>
 										<div class="clearfix"> </div>
 									</div>
 								</div>
@@ -210,8 +210,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<div id="sb-search" class="sb-search">
 								<form action="#" method="post">
 
-									<input class="sb-search-input" placeholder="Search" type="search" name="search"
-										id="search">
+									<input class="sb-search-input" placeholder="Search" type="search" name="search" id="search">
 									<input class="sb-search-submit" type="submit" value="">
 									<span class="sb-icon-search"> </span>
 								</form>
@@ -269,9 +268,112 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<div class="col-md-4 login-pop">
 
 							{% if user.is_authenticated%}
-							<div id="loginpop"> <a href="/logout/" id="logoutButton"><span>Logout<i
-											class="arrow glyphicon glyphicon-chevron-right"></i></span></a>
+							
+							
+							
+							
+							
+							<p id="p_usernameid">
+								Xin chào 
+								<a href="#" data-toggle="modal" id="a_username_id"
+									data-target="#Modal_Info"><span>{{ user.username }}</span></a></li>
+								!!!
+							</p>
+							<div id="loginpop"> <a href="{% url 'logout' %}" id="logoutButton"><span>Logout<i
+											class="arrow glyphicon glyphicon-chevron-right"></i></span></a></div>
+							<a href="#" id="a_change_id" data-toggle="modal" data-target="#ChangePass"><span>Đổi mật
+									khẩu</span></a>
+							<!-- Modal_Ifo -->
+							<div id="Modal_Info" class="modal fade" role="dialog">
+								<div class="modal-dialog">
+
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+											<h2 class="h2-modal">Thông tin cá nhân</h2>
+										</div>
+										<div class="modal-body">
+											<form action='#' name="signupform" id="signupformid" method="POST">
+												<label for="lname"><b>Tên:</b></label>
+												<input class="input" readonly="true" type="text" name="lname"
+													value="{{ user.last_name }}">
+												<div class="clearfix"></div>
+												<label for="lname"><b>Họ:</b></label>
+												<input class="input" readonly="true" type="text" name="fname"
+													value="{{ user.first_name }}">
+												<div class="clearfix"></div>
+												<label for="lname"><b>Giới tính:</b></label>
+												<input class="input" readonly="true" type="text" name="gender"
+													value="{{ user.gender }}">
+												<div class="clearfix"></div>
+												<label for="lname"><b>Email:</b></label>
+												<input class="input" readonly="true" type="text" name="email"
+													value="{{ user.email }}">
+												<div class="clearfix"></div>
+												<label for="lname"><b>Tên đăng nhập:</b></label>
+												<input class="input" readonly="true" type="text" name="username"
+													value="{{ user.username }}">
+											</form>
+											<div class="clearfix"></div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">Close</button>
+										</div>
+									</div>
+
+								</div>
 							</div>
+							<!-- End_Modal_Info -->
+							<!-- Modal_ChangePassword -->
+							<div id="ChangePass" class="modal fade" role="dialog">
+								<div class="modal-dialog">
+
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+											<h2 class="h2-modal">Đổi mật khẩu</h2>
+										</div>
+										<div class="modal-body">
+											<form action='#' name="changeform" id="changeform" method="POST"
+												onsubmit="return validateChangeForm()">
+												{% csrf_token %}
+												<div id="alertchange_placeholder"></div>
+												<label for="lname"><b>Tên đăng nhập:</b></label>
+												<input id="usernameid1" class="input" readonly="true" type="text"
+													name="username" value="{{ user.username }}">
+												<div class="clearfix"></div>
+												<label for="lname"><b>Mật khẩu:</b></label>
+												<input class="input" type="password" id="passwordid1" name="password" value="Nhập Password" onfocus="this.value = '';"
+													onblur="if (this.value == '') {this.value = 'Nhập Password';}"
+													required="">
+												<div class="clearfix"></div>
+												<label for="lname"><b>Mật khẩu mới:</b></label>
+												<input id="newpasswordid" class="input" type="password" name="newpassword" value="Nhập Password" onfocus="this.value = '';"
+													onblur="if (this.value == '') {this.value = 'Nhập Password';}"
+													required="">
+												<div class="clearfix"></div>
+												<label for="lname"><b>Nhập lại mật khẩu mới:</b></label>
+												<input class="input" type="password" id="passwordid" name="repassword"
+													value="Nhập Password" onfocus="this.value = '';"
+													onblur="if (this.value == '') {this.value = 'Nhập Password';}"
+													required="">
+												<div class="clearfix"></div>
+												<input id="submit" type="submit" value="Lưu">
+											</form>
+											<div class="clearfix"></div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">Close</button>
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<!--Modal-ChangePassword-->
 							{% else %}
 							<div id="loginpop"> <a href="#" id="loginButton"><span>Login <i
 											class="arrow glyphicon glyphicon-chevron-right"></i></span></a><a
@@ -311,7 +413,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 			<!-- content for extends -->
 			{% block content %}
-			
+
 			{% endblock content %}
 		</div>
 		<!--body wrapper start-->
@@ -355,7 +457,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="footer-grid">
 				<h3>Navigation</h3>
 				<ul class="list1">
-					<li><a href="/">Home</a></li>
+					<li><a href="{% url 'home' %}">Home</a></li>
 					<li><a href="radio.html">All Songs</a></li>
 					<li><a href="/upload">Upload</a></li>
 					<li><a href="radio.html">New Collections</a></li>
@@ -453,6 +555,69 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	{% block script %}
 	
 	{% endblock script %}
+	<script>
+		function showalertchange(message) {
+			$('#submit').attr("disabled", true);
+			$('#alertchange_placeholder').append('<div id="alertdiv"  class="alert alert-danger" role="alert" align="center"><a class="close" data-dismiss="alert">×</a><span>' + message + '</span></div>')
+			setTimeout(function () {
+				$("#alertdiv").remove(); $('#submit').attr("disabled", false);
+			}, 5000);
+		}
+		function validateChangeForm() {
+			var username = document.forms["changeform"]["username"].value;
+			var password = document.forms["changeform"]["password"].value;
+			var newpassword = document.forms["changeform"]["newpassword"].value;
+			var repassword = document.forms["changeform"]["repassword"].value;
+
+			if (!/.{5}.+/.test(password)) {
+				showalertchange("Mật khẩu có ít nhất 6 ký tự");
+				return false;
+			}
+			if (!/.{5}.+/.test(newpassword)) {
+				showalertchange("Mật khẩu mới có ít nhất 6 ký tự");
+				return false;
+			}
+			if (!/.{5}.+/.test(repassword)) {
+				showalertchange("Mật khẩu mới có ít nhất 6 ký tự");
+				return false;
+			}
+			if (newpassword != repassword) {
+				showalertchange("Hai mật khẩu không trùng khớp");
+				return false;
+			}
+			return true;
+		}
+		$(document).on('submit', '#changeform', function (e) {
+			e.preventDefault();
+			if (validateChangeForm() == true) {
+				$.ajax({
+					type: 'POST',
+					url: '/changepass/',
+					data: {
+						username: $('#usernameid1').val(),
+						password: $('#passwordid1').val(),
+						newpassword: $('#newpasswordid').val(),
+						csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+					},
+					success: function () {
+						$('#submit').attr("disabled", true);
+						$('#alertchange_placeholder').append('<div id="alertdiv"  class="alert alert-success" role="alert" align="center"><a class="close" data-dismiss="alert">×</a><span>Lưu Thành Công</span></div>')
+						setTimeout(function () {
+							$("#alertdiv").remove();
+						}, 5000);
+					},
+					error:function(xhr, ajaxOptions, thrownError){
+                            switch(xhr.status){
+                                case 417:
+										showalertchange("Sai mật khẩu!");
+                                        break;
+                            }
+                            
+                        }
+				});
+			}
+		});                                    
+	</script>
 </body>
 
 </html>

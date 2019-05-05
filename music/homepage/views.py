@@ -48,6 +48,18 @@ def Logout(request):
     logout(request)
     return redirect('/')
 
+    
+def ChangePass(request):
+    User=models.User
+    if(request.method == 'POST'):
+        user = authenticate(request, username = request.POST['username'], password = request.POST['password'])
+        if user is not None:
+            user.set_password(request.POST['newpassword'])
+            user.save()
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=417)
+
 
     
 
