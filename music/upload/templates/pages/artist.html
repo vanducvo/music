@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -67,7 +67,8 @@ input[type=submit]:hover {
   }
 }
 </style>
-</head>
+</head> 
+
 <body bgcolor = "#222222">
 {% if user.is_authenticated %}
 <h2 style="color: #ffff22"><center><b>Thông Tin Ca Sĩ<center><b></h2>
@@ -75,6 +76,16 @@ input[type=submit]:hover {
 <div class="container">
   <form action="add/" name="Artistform" id="Artistformid" method="POST">
     {% csrf_token %}
+    {% if messages %}
+      {% for message in messages %}
+        <div class="row">
+          <div {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span></span aria-hidden="true"></button>
+            <strong>{{message}}</strong>
+          </div> 
+        </div>
+      {% endfor %}
+    {% endif %}
     <div class="row">
       <div class="col-25">
         <label for="nameid">Tên Ca Sĩ</label>
