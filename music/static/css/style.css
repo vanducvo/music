@@ -4517,3 +4517,52 @@ text-decoration:none;
 	}
 }
 /***responsive***/
+/* adddd */
+#p_usernameid{
+	display: inline;
+}
+#a_username_id{
+	color:  #fff;
+}
+#loginpop {
+	position: fixed;
+	top: 1%;
+	right: 2%;
+}
+#a_change_id{
+	display: block;
+	color:#fff;
+}
+.modal-backdrop{
+	z-index: 2 !important;
+}
+.input{
+	float: right;
+    width: 50%;
+    margin-right:15%;
+}
+#submit{
+	background: #111;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    width: 20%;
+    outline: none;
+    -webkit-appearance: none;
+    padding: 15px 15px;
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    font-family: 'Lato-Regular';
+    margin-top: 20px;
+	     border-radius: 4px;
+    -o-border-radius: 4px;
+    -webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	margin-left: 40%
+}
+#submit:hover {
+	background:#EA57A3;
+}
+/*add*/
