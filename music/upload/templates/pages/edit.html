@@ -70,12 +70,28 @@ input[type=submit]:hover {
 </head>
 <body bgcolor = "#222222">
 {% if user.is_authenticated %}
+    <script>
+      var x = document.URL()
+      var y = x.length()
+      var pk = x[y-1]
+      alert(pk) 
+    </script>
     <h2 style="color: #ffff22"><center><b>Thông Tin Bài Hát<center><b></h2>
 
     <div class="container">
       <form action="/upload/edit/x/" name="Editform" id="Editformid" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <input  name = "pk" value = {{pk}}>
+        <div class="row">
+        <p><b>Note:</b>ID là số cuối cùng nằm trên url.</p>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="id">ID</label>
+          </div>
+          <div class="col-75">
+            <input type="text" id="id" name="pk" >
+          </div>
+        </div>
         <div class="row">
           <div class="col-25">
             <label for="titleid">Tên Bài Hát</label>
@@ -86,7 +102,19 @@ input[type=submit]:hover {
         </div>
         <div class="row">
           <div class="col-25">
-            <label for="artistid">Ca sĩ</label>
+            <label >Danh Sách Ca sĩ</label>
+          </div>
+          <div class="col-75">
+            <select>
+            {% for artist in object_list%}
+              <option > {{artist.name}}</option>
+            {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="artistid">Ca Sĩ</label>
           </div>
           <div class="col-75">
             <input type="text" id="artistid" name="artist" >
@@ -137,6 +165,8 @@ input[type=submit]:hover {
         <div class="row">
           <input type="submit" value="Save" id="Editbutton">
         </div>
+        {% comment %} {%endif%} {% endcomment %}
+        {% comment %} {%endfor%} {% endcomment %}
       </form>
     </div>
 {% endif %}

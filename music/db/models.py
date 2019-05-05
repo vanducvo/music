@@ -65,3 +65,4 @@ class BlocklistSong(models.Model):
 class ArtistOfProducer(models.Model):
     artist = models.ForeignKey(Artist, on_delete = models.DO_NOTHING)
     producer = models.ForeignKey(User, on_delete = models.DO_NOTHING)
+

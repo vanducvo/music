@@ -85,7 +85,19 @@ input[type=submit]:hover {
         </div>
         <div class="row">
           <div class="col-25">
-            <label for="artistid">Ca sĩ</label>
+            <label >Danh Sách Ca sĩ</label>
+          </div>
+          <div class="col-75">
+            <select>
+            {% for artist in object_list%}
+              <option > {{artist.name}}</option>
+            {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-25">
+            <label for="artistid">Ca Sĩ</label>
           </div>
           <div class="col-75">
             <input type="text" id="artistid" name="artist" >
