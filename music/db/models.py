@@ -9,7 +9,7 @@ class User(AbstractUser):
 
 #Song Entity
 class Song(models.Model):
-    GENRE_TYPES = (('n','Nhạc trẻ'),('b','Nhạc trữ tình'),('c','Nhạc cách mạng'),('k','Nhạc không lời'),('q','Nhạc quê hương'),('h','Rap/Hip Hop'),('r','Rock Việt'),('d','Dance Việt'))
+    GENRE_TYPES = (('n','Nhạc trẻ'),('b','Nhạc trữ tình'),('c','Nhạc cách mạng'),('k','Nhạc không lời'),('q','Nhạc quê hương'),('h','Rap/Hip Hop'),('r','Rock Việt'),('d','Dance Việt'),('o','other'))
     title = models.CharField(max_length = 200)
     image = models.ImageField(upload_to ='image')
     audio = models.FileField(upload_to='audio')
@@ -22,7 +22,7 @@ class Song(models.Model):
 class Artist(models.Model):
     GENDER_TYPES = (('m','male'), ('f','female'), ('o','other'))
     name = models.CharField(max_length = 100, default= 'No Name')
-    gender = models.CharField(max_length = 6, choices = GENDER_TYPES, default ='orther')
+    gender = models.CharField(max_length = 6, choices = GENDER_TYPES, default ='other')
     introduc = models.TextField(default="No information")
 
 #Block list Entity

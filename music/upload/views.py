@@ -34,7 +34,8 @@ def Add_song(request):
                         artistsingsong.save()
                         return redirect('/upload')
                 else :
-                        messages.success(request, 'Ca Sĩ Không Hợp Lệ',extra_tags='safe')
+                        messages.warning(request, 'Ca Sĩ Không Hợp Lệ',extra_tags='safe')
+                        return redirect('/upload/error.html')
 
 def Artist(request):
         return render(request,'pages/artist.html')
@@ -47,12 +48,13 @@ def Add_artist(request):
                 artist.gender = request.POST['gender']
                 artist.introduc = request.POST['introduc']
                 if models.Artist.objects.filter(name=artist.name):
-                        messages.success(request,'Ca Sĩ Đã Tồn Tại',extra_tags='safe')
+                        messages.warning(request,'Ca Sĩ Đã Tồn Tại',extra_tags='safe')
+                        return redirect('/upload/error.html')
                 else:
                         artist.save()
                         return redirect('/upload')
         else : 
-                return redirect('/error.html')
+                return redirect('/upload/error.html')
 #View upload page
 class SongListView(ListView):
         model = models.ArtistSingSong
@@ -79,15 +81,20 @@ def X(request):
         obj.lyric = request.POST['lyric']
         obj.audio = request.FILES['audio']
         
-        artistsingsong = models.ArtistSingSong()
-        artistsingsong.song = obj
+        artistsingsong = models.ArtistSingSong.objects.filter(song = obj)[0]
         if models.Artist.objects.filter(name = request.POST['artist']):
                 artistsingsong.artist = models.Artist.objects.get(name = request.POST['artist'])
                 obj.save()
                 artistsingsong.save()
+        else :
+                messages.warning(request,'Ca Sĩ Không Tồn Tại', extra_tags='safe')
+                return redirect('/upload/error.html')
         return redirect('/upload')
 
 def Delete(request, pk):
         obj = models.Song.objects.get(pk=pk)
         obj.delete()
         return redirect('/upload')
+
+def Error(request):
+        return render(request,'pages/error.html')
