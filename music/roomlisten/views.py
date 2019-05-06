@@ -17,7 +17,10 @@ def RoomListen(request, room_name):
 
 @login_required
 def IndexRoom(request):
-    return render(request, 'roomlisten/index.html',{})
+    rooms = models.RoomListen.objects.filter(user__username__exact=request.user.username)
+    return render(request, 'roomlisten/index.html',{
+        'yourroom':  mark_safe(json.dumps(rooms_to_json(rooms)))
+    })
 
 @login_required
 def LoadMoreMessage(request):
@@ -66,4 +69,18 @@ def message_to_json(message):
         'author': message.user.username,
         'message': message.content,
         'timestamp': str(message.timestamp)
+    }
+
+def rooms_to_json(rooms):
+    result = []
+    for room in rooms:
+        result.append(room_to_json(room))
+    
+    return result
+
+def room_to_json(room):
+    return{
+        'roomname': room.name,
+        'user': room.user.username,
+        'topic': room.topic,
     }

@@ -84,13 +84,6 @@
                         <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
                             <div class="browse-inner">
                                 <!-- /agileits -->
-
-                                <div class="col-md-3 artist-grid">
-                                    <a href="single.html"><img src="https://picsum.photos/300/300"
-                                            title="allbum-name"></a>
-                                    <a href="single.html"><i class="glyphicon glyphicon-play-circle"></i></a>
-                                    <a class="art" href="single.html">Sukhwinder singh</a>
-                                </div>
                                 <div class="col-md-3 artist-grid">
                                     <a data-toggle="modal" data-target="#CreateRoomModal"><img src="https://picsum.photos/300/300"
                                             title="allbum-name"></a>
@@ -262,39 +255,90 @@
 
 {% block script %}
 <script>
- $(document).on('submit', '#createroomformid', function(e){
-    e.preventDefault();
-    var roomname = document.forms["createroomformid"]["roomname"].value;
-    var roompassword = document.forms["createroomformid"]["roompassword"].value;
-    var topic = document.forms["createroomformid"]["topic"].value;
-    if (roomname === 'Nhập Tên Phòng' || !/^[A-Za-z][A-Za-z0-9]+$/.test(roomname)) {
-		alert("Tên phòng không hợp lệ");
-		return false;
-	}
-	if (roomname === 'Nhập Password Phòng' || !/.{5}.+/.test(roompassword)) {
-		alert("Password không hợp lệ");
-		return false;
-	}
-    if (topic === 'Nhập Chủ Đề'|| !/[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(topic)){
-        alert("Chủ đề  không hợp lệ");
-		return false;
+    var yourroom = {{yourroom}};
+    window.onload = function(){
+        for (let i = 0; i < yourroom.length; i++){
+            CreateRoom(yourroom[i], 0);
+        }
     }
-    $.ajax({
-        type: 'POST',
-        url: '/roomlisten/create/',
-        data:{
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            roomname: roomname,
-            topic: topic,
-            password: roompassword,
-        },
-        success: function(e){
-            alert('Tạo thành công.');
-        },
-        error: function(e){
-            alert('Phòng đã tồn tại');
-        },
+    // $(document).ready(function(){
+    //     for (let i = 0; i < yourroom.length; i++){
+    //         CreateRoom(yourroom[i], 0);
+    //     }
+    // });
+    function CreateRoom(json, type) {
+        roomname = json['roomname'];
+        topic = json['topic'];
+        const BrowseInner = document.querySelector(".browse-inner");
+        const Ablums = document.querySelector(".albums");
+        const Room = document.createElement("div");
+        Room.classList.add("col-md-3", "artist-grid");
+
+        const AImage = document.createElement("a");
+        AImage.setAttribute("href", "/roomlisten/chat/" + roomname);
+        const Image = document.createElement("img");
+        Image.setAttribute("src", "https://picsum.photos/300/300");
+        Image.setAttribute("title", "allbum-name");
+        AImage.append(Image); //composite
+
+        const AGlyphicon = document.createElement("a");
+        AGlyphicon.setAttribute("href", "/roomlisten/chat/" + roomname);
+        const Glyphicon = document.createElement("i");
+        Glyphicon.classList.add("glyphicon", "glyphicon-play-circle");
+        AGlyphicon.append(Glyphicon);
+
+        const Art = document.createElement("a");
+        Art.setAttribute("href", "/roomlisten/chat/" + roomname);
+        Art.classList.add("art");
+        Art.textContent = topic;
+
+        Room.append(AImage, AGlyphicon, Art);
+        if(type === 0){
+            BrowseInner.prepend(Room);
+        }else{
+            Ablums.prepend(Room);
+        }
+    }
+    $(document).on('submit', '#createroomformid', function (e) {
+        e.preventDefault();
+        var roomname = document.forms["createroomformid"]["roomname"].value;
+        var roompassword = document.forms["createroomformid"]["roompassword"].value;
+        var topic = document.forms["createroomformid"]["topic"].value;
+        if (roomname === 'Nhập Tên Phòng' || !/^[A-Za-z][A-Za-z0-9]+$/.test(roomname)) {
+            alert("Tên phòng không hợp lệ");
+            return false;
+        }
+        if (roomname === 'Nhập Password Phòng' || !/.{5}.+/.test(roompassword)) {
+            alert("Password không hợp lệ");
+            return false;
+        }
+        if (topic === 'Nhập Chủ Đề' || !/[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(topic)) {
+            alert("Chủ đề  không hợp lệ");
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/roomlisten/create/',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                roomname: roomname,
+                topic: topic,
+                password: roompassword,
+            },
+            success: function (e) {
+                $('.close').trigger('click');
+
+                var json = {
+                    "roomname": roomname,
+                    "topic": topic
+                };
+                CreateRoom(json, 0);
+
+            },
+            error: function (e) {
+                alert('Phòng đã tồn tại');
+            },
+        });
     });
- });
 </script>
 {% endblock script %}
