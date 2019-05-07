@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 from db import models
 from django.contrib.auth.hashers import make_password
+from django.db.models import Q
 import json
 
 # Create your views here.
@@ -17,9 +18,11 @@ def RoomListen(request, room_name):
 
 @login_required
 def IndexRoom(request):
-    rooms = models.RoomListen.objects.filter(user__username__exact=request.user.username)
+    yourrooms = models.RoomListen.objects.filter(user__username__exact=request.user.username)
+    otherrooms = models.RoomListen.objects.filter(~Q(user__username__exact=request.user.username))
     return render(request, 'roomlisten/index.html',{
-        'yourroom':  mark_safe(json.dumps(rooms_to_json(rooms)))
+        'yourroom':  yourrooms,
+        'otherroom': otherrooms,
     })
 
 @login_required

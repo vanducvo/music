@@ -26,8 +26,8 @@
                                 <input type="text" id="topicid" name="topic" value="Nhập Chủ Đề"
                                     onfocus="this.value = '';"
                                     onblur="if (this.value == '') {this.value = 'Nhập Chủ Đề';}" required="">
-                                <input type="password" id="roompasswordid" name="roompassword" value="Nhập Password Phòng"
-                                    onfocus="this.value = '';"
+                                <input type="password" id="roompasswordid" name="roompassword"
+                                    value="Nhập Password Phòng" onfocus="this.value = '';"
                                     onblur="if (this.value == '') {this.value = 'Nhập Password Phòng';}" required="">
 
                                 <input id="createroom" type="submit" value="Tạo Phòng">
@@ -84,10 +84,18 @@
                         <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
                             <div class="browse-inner">
                                 <!-- /agileits -->
+                                {% for room in yourroom %}
                                 <div class="col-md-3 artist-grid">
-                                    <a data-toggle="modal" data-target="#CreateRoomModal"><img src="https://picsum.photos/300/300"
-                                            title="allbum-name"></a>
-                                    <a href="#" data-toggle="modal" data-target="#CreateRoomModal"><i class=" glyphicon glyphicon-plus-sign"></i></a>
+                                    <a href="/roomlisten/chat/{{room.name}}"><img src="https://picsum.photos/300/300" title="allbum-name"></a>
+                                    <a href="/roomlisten/chat/{{room.name}}"><i class="glyphicon glyphicon-play-circle"></i></a>
+                                    <a class="art" href="/roomlisten/chat/{{room.name}}">{{room.topic}}</a>
+                                </div>
+                                {% endfor %}
+                                <div class="col-md-3 artist-grid">
+                                    <a data-toggle="modal" data-target="#CreateRoomModal"><img
+                                            src="https://picsum.photos/300/300" title="allbum-name"></a>
+                                    <a href="#" data-toggle="modal" data-target="#CreateRoomModal"><i
+                                            class=" glyphicon glyphicon-plus-sign"></i></a>
                                     <a class="art" data-toggle="modal" data-target="#CreateRoomModal">Thêm Phòng Mới</a>
                                 </div>
                                 <div class="clearfix"> </div>
@@ -109,78 +117,13 @@
                 </a>
                 <div class="clearfix"> </div>
             </div>
+            {% for room in otherroom %}
             <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v11.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
+                <a href="/roomlisten/chat/{{room.name}}"><img src="https://picsum.photos/300/300" title="allbum-name"></a>
+                <a href="/roomlisten/chat/{{room.name}}"><i class="glyphicon glyphicon-play-circle"></i></a>
+                <a class="art" href="/roomlisten/chat/{{room.name}}">{{room.topic}}</a>
             </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v22.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v33.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid last-grid">
-                <a href="single.html"><img src="images/v44.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v55.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v66.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v77.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid last-grid">
-                <a href="single.html"><img src="images/v88.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v99.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v9.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v21.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v5.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
+            {% endfor %}
             <div class="clearfix"> </div>
         </div>
     </div>
@@ -255,12 +198,16 @@
 
 {% block script %}
 <script>
-    var yourroom = {{yourroom}};
-    window.onload = function(){
-        for (let i = 0; i < yourroom.length; i++){
-            CreateRoom(yourroom[i], 0);
-        }
-    }
+    // var yourroom = {
+    //     {
+    //         yourroom
+    //     }
+    // };
+    // window.onload = function () {
+    //     for (let i = 0; i < yourroom.length; i++) {
+    //         CreateRoom(yourroom[i], 0);
+    //     }
+    // }
     // $(document).ready(function(){
     //     for (let i = 0; i < yourroom.length; i++){
     //         CreateRoom(yourroom[i], 0);
@@ -293,9 +240,9 @@
         Art.textContent = topic;
 
         Room.append(AImage, AGlyphicon, Art);
-        if(type === 0){
+        if (type === 0) {
             BrowseInner.prepend(Room);
-        }else{
+        } else {
             Ablums.prepend(Room);
         }
     }
