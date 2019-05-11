@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 from db import models
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.db.models import Q
 import json
 
@@ -11,6 +11,30 @@ import json
 
 @login_required
 def RoomListen(request, room_name):
+    room = models.RoomListen.objects.filter(name__exact=room_name)
+    if list(room) == []:
+            return render(request,'roomlisten/notify.html', {
+                infor: 'Phòng Không Tồn Tại'
+            })
+    
+    room = room[0]
+    if room.user.username != request.user.username:
+        if request.method == 'POST':
+            password = request.POST['loginroompassword']
+            if check_password(password, room.password):   
+                return render(request, 'roomlisten/roomlisten.html', {
+                    'room_name_json': mark_safe(json.dumps(room_name)),
+                     'username':mark_safe(json.dumps(request.user.username)),
+                })
+            else:
+                return render(request,'roomlisten/notify.html',{
+                    'infor': 'Mật Khẩu Không Đúng'
+                })
+        else:
+            return render(request,'roomlisten/notify.html',{
+                    'infor': 'Mật Khẩu Không Đúng'
+                })
+
     return render(request, 'roomlisten/roomlisten.html', {
         'room_name_json': mark_safe(json.dumps(room_name)),
         'username':mark_safe(json.dumps(request.user.username)),
