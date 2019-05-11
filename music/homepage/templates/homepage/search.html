@@ -114,14 +114,14 @@
 <div id="page-wrapper">
 
     <h1>Kết quả tìm kiếm</h1>
-    {%if content.result_song.count > 0%}
+    {%if content.result_song != NULL %}
     <h2>Bài hát</h2>
     <ul class="statuss">
         {% for song in content.result_song %}
         <div class="col-md-3 artist-grid">
-            <a href="/result_search/{{content.search_string}}/"><img src="{{song.image.url}}" title="allbum-name"></a>
+            <a href="/result_search/{{content.search_string}}/"><img src="/media/{{song.image}}" title="allbum-name"></a>
             <a href="/result_search/{{content.search_string}}/"><i class="glyphicon glyphicon-play-circle"></i></a>
-            <a class="art" href="/result_search/{{content.search_string}}/">{{song.title}}</a>
+            <a class="art" href="/result_search/{{song.title}}+{{song.name}}/">{{song.title}} -{{song.name}}</a>
         </div>
        {% endfor %}    
        <div class="clearfix"> </div>

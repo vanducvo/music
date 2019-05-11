@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 import json
+from django.db import connection
+from collections import namedtuple
 # Create your views here.
 
 def Homepage(request):
@@ -63,11 +65,14 @@ def ChangePass(request):
 def Search(request):
     if(request.method == 'POST'):
         search_string =  request.POST['searchtext']
-        print(search_string)
-        result_song = models.Song.objects.filter(title__icontains = search_string)
+        #result_song = models.Song.objects.filter(title__icontains = search_string)
+        print (search_string)
+        with connection.cursor() as cursor:
+            cursor.execute("select title,image,audio,lyric,genre,name from dbmusic.db_song inner join dbmusic.db_artistsingsong on dbmusic.db_song.id = dbmusic.db_artistsingsong.song_id inner join dbmusic.db_artist on dbmusic.db_artistsingsong.artist_id=dbmusic.db_artist.id where dbmusic.db_song.title like '%" + search_string + "%'")
+            result_song =  namedtuplefetchall(cursor)
         #result_song = json.dumps(songs_to_json(result_song))
         for p in result_song:
-            print (p.image.url)
+            print (p.title)
         content= {
             'result_song': result_song,
             'search_string': search_string
@@ -93,6 +98,12 @@ def song_to_json(song):
         'lyric': song.lyric,
         'genre': song.genre,
     }
+def namedtuplefetchall(cursor):
+    "Return all rows from a cursor as a namedtuple"
+    desc = cursor.description
+    nt_result = namedtuple('Result', [col[0] for col in desc])
+    return [nt_result(*row) for row in cursor.fetchall()]
+
 
     
 
