@@ -71,11 +71,15 @@ def Search(request):
             cursor.execute("select title,image,audio,lyric,genre,name from dbmusic.db_song inner join dbmusic.db_artistsingsong on dbmusic.db_song.id = dbmusic.db_artistsingsong.song_id inner join dbmusic.db_artist on dbmusic.db_artistsingsong.artist_id=dbmusic.db_artist.id where dbmusic.db_song.title like '%" + search_string + "%'")
             result_song =  namedtuplefetchall(cursor)
         #result_song = json.dumps(songs_to_json(result_song))
+        count = 0
         for p in result_song:
-            print (p.title)
+            print (p)
+            count+=1
+        print (count)
         content= {
             'result_song': result_song,
-            'search_string': search_string
+            'search_string': search_string,
+            'count':count
         }
        # result_artist = models.Artist.objects.get(name__icontains = search_string)
         #return HttpResponse(json.dumps(songs_to_json(result_song)), content_type='aplication/json')

@@ -114,7 +114,7 @@
 <div id="page-wrapper">
 
     <h1>Kết quả tìm kiếm</h1>
-    {%if content.result_song != NULL %}
+    {%if content.count > 0 %}
     <h2>Bài hát</h2>
     <ul class="statuss">
         {% for song in content.result_song %}
