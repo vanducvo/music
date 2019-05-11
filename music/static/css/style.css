@@ -2038,14 +2038,16 @@ h4.tittle.third {
 /*---browse-grid-----*/
 /*---browse-grid-----*/
 .artist-grid {
-   width: 16.66%;
+	width: 20%;
+	height: auto;
     float: left;
     text-align: center;
     box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.35);
     margin-right: 0%;
     margin-bottom: 2%;
     position: relative;
-    padding-left: 0;
+	padding-left: 0;
+	
 }
 .artist-grid img {
     width: 100%;
@@ -2053,6 +2055,7 @@ h4.tittle.third {
 	-o-border-radius: 4px 4px 0px 0px;
 	-moz-border-radius: 4px 4px 0px 0px;
 	-webkit-border-radius: 4px 4px 0px 0px;
+	image-rendering: pixelated;
 }
 .artist-grid:nth-child(6),.artist-grid:nth-child(12) {
     margin-left: 0%;

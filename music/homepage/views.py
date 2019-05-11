@@ -65,21 +65,34 @@ def ChangePass(request):
 def Search(request):
     if(request.method == 'POST'):
         search_string =  request.POST['searchtext']
-        #result_song = models.Song.objects.filter(title__icontains = search_string)
+        result_song = models.ArtistSingSong.objects.filter(song__title__icontains = search_string)
+        artist = models.ArtistSingSong.objects.filter(artist__name__icontains = search_string)
         print (search_string)
-        with connection.cursor() as cursor:
-            cursor.execute("select title,image,audio,lyric,genre,name from dbmusic.db_song inner join dbmusic.db_artistsingsong on dbmusic.db_song.id = dbmusic.db_artistsingsong.song_id inner join dbmusic.db_artist on dbmusic.db_artistsingsong.artist_id=dbmusic.db_artist.id where dbmusic.db_song.title like '%" + search_string + "%'")
-            result_song =  namedtuplefetchall(cursor)
-        #result_song = json.dumps(songs_to_json(result_song))
-        count = 0
-        for p in result_song:
-            print (p)
-            count+=1
-        print (count)
+        #with connection.cursor() as cursor:
+        #    cursor.execute("select title,image,audio,lyric,genre,name from dbmusic.db_song inner join dbmusic.db_artistsingsong on dbmusic.db_song.id = dbmusic.db_artistsingsong.song_id inner join dbmusic.db_artist on dbmusic.db_artistsingsong.artist_id=dbmusic.db_artist.id where dbmusic.db_song.title like '%" + search_string + "%'")
+        #    result_song =  namedtuplefetchall(cursor)
+        #result_song = json.dumps(songs_to_json(result_song))      
+        t_artist = []
+        result_artist = []
+        for p in artist:
+            t_artist.append(p.artist)
+        count_ar = 0
+        t_artist = set(t_artist)
+        for j in t_artist:
+            #print(j)
+            count_ar += 1 
+        #print(count_ar)
+        for p in artist:
+            for k in t_artist:
+                if p.artist == k:
+                    result_artist.append(p)
+                    break
         content= {
             'result_song': result_song,
             'search_string': search_string,
-            'count':count
+            'result_artist': result_artist,
+            'count_ar': count_ar,
+            't_artist' : t_artist
         }
        # result_artist = models.Artist.objects.get(name__icontains = search_string)
         #return HttpResponse(json.dumps(songs_to_json(result_song)), content_type='aplication/json')
