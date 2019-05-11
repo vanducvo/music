@@ -3,6 +3,7 @@ from db import models
 from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+import json
 # Create your views here.
 
 def Homepage(request):
@@ -59,7 +60,39 @@ def ChangePass(request):
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=417)
+def Search(request):
+    if(request.method == 'POST'):
+        search_string =  request.POST['searchtext']
+        print(search_string)
+        result_song = models.Song.objects.filter(title__icontains = search_string)
+        #result_song = json.dumps(songs_to_json(result_song))
+        for p in result_song:
+            print (p.image.url)
+        content= {
+            'result_song': result_song,
+            'search_string': search_string
+        }
+       # result_artist = models.Artist.objects.get(name__icontains = search_string)
+        #return HttpResponse(json.dumps(songs_to_json(result_song)), content_type='aplication/json')
+        return render(request,'homepage/search.html' ,{'content':content})
+    else:    
+        return render(request,'homepage/homepage.html')
 
+def songs_to_json(songs):
+    result =[]
+    for song in songs:
+        result.append(song_to_json(song))
+
+    return result
+
+def song_to_json(song):
+    return {
+        'title': song.title,
+        'image': song.image.url,
+        'audio': song.audio.url,
+        'lyric': song.lyric,
+        'genre': song.genre,
+    }
 
     
 
