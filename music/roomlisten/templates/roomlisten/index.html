@@ -1,4 +1,67 @@
 {% extends "index.html" %}
+{% block header %}
+<style>
+    .litlesearch {
+    box-sizing: border-box;
+    }
+
+
+    /*the container must be positioned relative:*/
+    .litlesearch .autocomplete {
+    position: relative;
+    display: inline-block;
+    }
+
+    .litlesearch input, button {
+    border: 1px solid transparent;
+    background-color: #f1f1f1;
+    padding: 10px;
+    font-size: 16px;
+    }
+
+    .litlesearch input[type=text] {
+    background-color: #f1f1f1;
+    width: 100%;
+    }
+
+    .litlesearch input[type=submit], button {
+    background-color: DodgerBlue;
+    color: #fff;
+    cursor: pointer;
+    }
+
+    .litlesearch .autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+    }
+
+    .litlesearch .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff; 
+    border-bottom: 1px solid #d4d4d4; 
+    }
+
+    /*when hovering an item:*/
+    .litlesearch .autocomplete-items div:hover {
+    background-color: #e9e9e9; 
+    }
+
+    /*when navigating through the items using the arrow keys:*/
+    .litlesearch .autocomplete-active {
+    background-color: DodgerBlue !important; 
+    color: #ffffff; 
+    }
+</style>
+
+{% endblock header %}
 {% block addmodal %}
 <div class="modal fade" id="CreateRoomModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -75,8 +138,72 @@
       </div>
     </div>
   </div>
+<div class="modal" id="ModalRoomEdit">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h2 class="modal-title" id ="editroomtitle">Chỉnh Sửa Phòng</h2>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="tabbable"> <!-- Only required for left/right tabs -->
+            <ul class="nav nav-tabs">
+            <li class="active"><a href="#changeroompass" data-toggle="tab">Thông Tin</a></li>
+            <li><a href="#addsongtoroom" data-toggle="tab">Thêm Bài Hát</a></li>
+            <li><a href="#deleteroom" data-toggle="tab">Xóa Phòng</a></li>
+            </ul>
+            <div class="tab-content">
+            <div class="tab-pane active" id="changeroompass" style="margin-top: 10px">
+                    <form name="editroomform" id="editroomformid" method='POST'>
+                        <label for="topiclabel" style="margin-top: 10px">Chủ Đề</label>
+                        <input type="text" id="topiceditid" name="topicedit" value="Nhập Chủ Đề" class = "form-control"
+                            onfocus="this.value = '';"
+                            onblur="if (this.value == '') {this.value = 'Nhập Chủ Đề';}" required="">
+                        <label for="topiclabel" style="margin-top: 10px">Password Phòng Mới</label>
+                        <input type="password" id="roomeditpasswordid" name="roomeditpassword" class = "form-control"
+                            value="Nhập Password Phòng" onfocus="this.value = '';"
+                            onblur="if (this.value == '') {this.value = 'Nhập Password Phòng';}" required="">
+                        <label for="topiclabel" style="margin-top: 10px">Password Phòng Cũ</label>
+                        <input type="password" id="oldroomeditpasswordid" name="oldroomeditpassword" class = "form-control"
+                            value="Nhập Password Phòng" onfocus="this.value = '';"
+                            onblur="if (this.value == '') {this.value = 'Nhập Password Phòng';}" required="">
+                        <button style="margin-top: 10px" type="button" class="btn btn-success">Chỉnh Sửa</button>
+                    </form>
+            </div>
+            <div class="tab-pane" id="addsongtoroom">
+                <div class = "litlesearch" style="margin: 50px">
+                    <form autocomplete="off" id="simplesearch">
+                        <div class="autocomplete" style="width:300px;">
+                            <input id="myInput" type="text" name="myCountry" placeholder="Tên Bài Hát">
+                        </div>
+                        <button type="button" class = "glyphicon glyphicon-plus"></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="deleteroom">
+                <h3>Mọi Dữ Liệu Của Phòng Sẽ Bị Mất Vĩnh Viễn</h3>
+                <button id = "deleteroom" style="margin-top: 10px" type="button" class="btn btn-danger">Xác Nhận Xóa</button>
+            </div>
+            </div>
+            </div>        
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 {% endblock addmodal %}
 {% block content %}
+
+<!--Model-->
+
 <div id="page-wrapper">
     <div class="inner-content">
         <div class="music-browse">
@@ -116,11 +243,21 @@
                                 <!-- /agileits -->
                                 {% for room in yourroom %}
                                 <div class="col-md-3 artist-grid">
-                                    <a href="/roomlisten/chat/{{room.name}}"><img src="https://picsum.photos/300/300" title="allbum-name"></a>
+                                    <a href="/roomlisten/chat/room.name"><img src="https://picsum.photos/300/300" title="allbum-name"></a>
                                     <a href="/roomlisten/chat/{{room.name}}"><i class="glyphicon glyphicon-play-circle"></i></a>
                                     <a class="art" href="/roomlisten/chat/{{room.name}}">{{room.topic}}</a>
+                                    <a href="#" data-toggle="modal" data-target="#ModalRoomEdit" onclick="selecteditroom('{{room.name}}')"><i class = "glyphicon glyphicon-pencil"></i></a>
                                 </div>
                                 {% endfor %}
+                                <!--For test-->
+                                <div class="col-md-3 artist-grid">
+                                    <a data-toggle="modal" data-target="#ModalRoomEdit"><img
+                                            src="https://picsum.photos/300/300" title="allbum-name"></a>
+                                    <a href="#" data-toggle="modal" data-target="#ModalRoomEdit"><i
+                                            class=" glyphicon glyphicon-plus-sign"></i></a>
+                                    <a class="art" data-toggle="modal" data-target="#ModalRoomEdit">Thêm Phòng Mới</a>
+                                </div>
+                                <!--For test-->
                                 <div class="col-md-3 artist-grid">
                                     <a data-toggle="modal" data-target="#CreateRoomModal"><img
                                             src="https://picsum.photos/300/300" title="allbum-name"></a>
@@ -203,11 +340,23 @@
         Art.setAttribute("href", "/roomlisten/chat/" + roomname);
         Art.classList.add("art");
         Art.textContent = topic;
+        
+        const Edit = document.createElement("a");
+        Edit.setAttribute("href", "#");
+        Edit.setAttribute( "data-toggle","modal");
+        Edit.setAttribute( "data-target", "#ModalRoomEdit");
 
-        Room.append(AImage, AGlyphicon, Art);
+
+        const GlyphiconE = document.createElement("i");
+        GlyphiconE.classList.add("glyphicon", "glyphicon-pencil");
+        Edit.append(GlyphiconE);
+
+        
         if (type === 0) {
+            Room.append(AImage, AGlyphicon, Art, Edit);
             BrowseInner.prepend(Room);
         } else {
+            Room.append(AImage, AGlyphicon, Art);
             Ablums.prepend(Room);
         }
     }
@@ -252,5 +401,147 @@
             },
         });
     });
+</script>
+<script>
+    var cmplsong = [];
+
+    
+
+    function autocomplete(inp, arr) {
+    /*the autocomplete function takes two arguments,
+    the text field element and an array of possible autocompleted values:*/
+    var currentFocus;
+    /*execute a function when someone writes in the text field:*/
+    inp.addEventListener("input", function(e) {
+        var a, b, i, val = this.value;
+        /*close any already open lists of autocompleted values*/
+        closeAllLists();
+        if (!val) { return false;}
+        currentFocus = -1;
+        /*create a DIV element that will contain the items (values):*/
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        /*append the DIV element as a child of the autocomplete container:*/
+        this.parentNode.appendChild(a);
+        /*for each item in the array...*/
+        for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+            /*create a DIV element for each matching element:*/
+            b = document.createElement("DIV");
+            /*make the matching letters bold:*/
+            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+            b.innerHTML += arr[i].substr(val.length);
+            /*insert a input field that will hold the current array item's value:*/
+            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+            /*execute a function when someone clicks on the item value (DIV element):*/
+            b.addEventListener("click", function(e) {
+                /*insert the value for the autocomplete text field:*/
+                inp.value = this.getElementsByTagName("input")[0].value;
+                /*close the list of autocompleted values,
+                (or any other open lists of autocompleted values:*/
+                closeAllLists();
+            });
+            a.appendChild(b);
+            }
+        }
+    });
+    /*execute a function presses a key on the keyboard:*/
+    inp.addEventListener("keydown", function(e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+            /*and simulate a click on the "active" item:*/
+            if (x) x[currentFocus].click();
+            }
+        }
+    });
+    function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+    }
+    function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("autocomplete-active");
+        }
+    }
+    function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+        if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+        }
+        }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+    }
+
+    
+    $("#myInput").keydown(function(e){
+        if($("#myInput").val().length == 1 || e.keyCode == 32){
+            $.ajax({
+            type: 'GET',
+            url: '/roomlisten/simplesearch/',
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                song: $("#myInput").val(),
+            },
+            success: function(json){
+                console.log(json['song']);
+                cmplsong = json['song'];
+                autocomplete(document.getElementById("myInput"), cmplsong);
+            }
+            });
+        }
+    });
+        
+        
+</script>
+<script>
+    function selecteditroom(roomname){
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/roomlisten/inforoom/',
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                name: roomname,
+            },
+            success: function(json){
+                var topic = json['infor']['topic'];
+                $('#editroomtitle').text('Chỉnh Sửa Phòng ' + topic);
+                $('#topiceditid').attr("value", topic);
+                $('#topiceditid').attr('onblur',"if (this.value == '') {this.value = '" + topic + "';}");
+            }
+        });
+    }
 </script>
 {% endblock script %}

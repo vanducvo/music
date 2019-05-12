@@ -603,13 +603,13 @@
                 // initialize playlist and controls
                 var index = 0,
                     playing = false,
-                    mediaPath = '',
+                    mediaPath = 'https://archive.org/download/mythium/',
                     extension = '',
                     tracks = [{
                         "track": 1,
-                        "name": "Nhớ Một Chiều Xuân",
+                        "name": "All This Is - Joe L.'s Studio",
                         "duration": "2:46",
-                        "file": "/media/audio/Nho_Mot_Chieu_XuanLite.mp3"
+                        "file": "JLS_ATI"
                     }, {
                         "track": 2,
                         "name": "The Forsaken - Broadwing Studio (Final Mix)",
@@ -859,7 +859,7 @@
                         $('#plList li:eq(' + id + ')').addClass('plSel');
                         npTitle.text(tracks[id].name);
                         index = id;
-                        audio.src = tracks[id].file;
+                        audio.src = mediaPath + tracks[id].file + extension;
                     },
                     playTrack = function (id) {
                         loadTrack(id);

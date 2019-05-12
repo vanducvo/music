@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from db import models
 from django.contrib.auth.hashers import make_password, check_password
 from django.db.models import Q
+from django.template.defaultfilters import slugify
 import json
 
 # Create your views here.
@@ -81,6 +82,26 @@ def Create_Room(request):
         password = make_password(roompassword)
     )
     return HttpResponse(status=200)
+
+@login_required
+def SimpleSeach(request):
+    if request.method == 'GET':
+        subsongname = request.GET['song']
+        songs = models.Song.objects.filter(title__icontains=subsongname)
+        result = []
+        for song in songs:
+            result.append(song.title)
+
+    return HttpResponse(json.dumps({'song': result}), content_type='aplication/json')
+
+
+@login_required
+def Infor(request):
+    if request.method == 'GET':
+        roomname = request.GET['name']
+        room = models.RoomListen.objects.filter(name__exact=roomname)[0]
+    
+    return HttpResponse(json.dumps({'infor':{'topic': room.topic}}), content_type='aplication/json')
 
 
 def messages_to_json(messages):
