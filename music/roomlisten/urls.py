@@ -8,4 +8,6 @@ urlpatterns = [
     path('create/', views.Create_Room),
     path('simplesearch/', views.SimpleSeach),
     path('inforoom/', views.Infor),
+    path('maniproom/', views.manip_room),
+    path('editroom/', views.editroom),
 ]
