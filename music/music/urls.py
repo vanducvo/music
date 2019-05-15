@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('homepage.urls')),
     path('roomlisten/', include('roomlisten.urls')),
     path('upload/', include('upload.urls')),
+    path('song/', include('songlisten.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'upload',
     'db',
     'roomlisten',
+    'songlisten',
     'channels',
 ]
 
