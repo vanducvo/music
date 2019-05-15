@@ -7,18 +7,38 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.db.models import Q
 from django.template.defaultfilters import slugify
 import json
+import eyed3
 
 # Create your views here.
 
 @login_required
 def RoomListen(request, room_name):
     room = models.RoomListen.objects.filter(name__exact=room_name)
+    
     if list(room) == []:
             return render(request,'roomlisten/notify.html', {
                 'infor': 'Phòng Không Tồn Tại'
             })
-    
     room = room[0]
+    playsist = models.SongInPlayist.objects.filter(playist__room__pk__exact=room.pk)
+    songs = []
+    i = 0
+    for song in playsist:
+        time = eyed3.load('/home/ducvovan/Source/main/music/music/' + song.song.audio.url).info.time_secs
+        duration = str(int(time/60)) + ":" + str(int(time)%60).zfill(2)
+        songname = song.song.title
+        artists =  models.ArtistSingSong.objects.filter(song__pk__exact=song.song.pk)
+        for artist in artists:
+            songname =  songname + '-' + artist.artist.name
+
+        songs.append({
+            'track': i,
+            'name': songname,
+            'duration': duration,
+            'file': song.song.audio.url
+        })
+        i = i + 1
+    
     if room.user.username != request.user.username:
         if request.method == 'POST':
             password = request.POST['loginroompassword']
@@ -26,6 +46,7 @@ def RoomListen(request, room_name):
                 return render(request, 'roomlisten/roomlisten.html', {
                     'room_name_json': mark_safe(json.dumps(room_name)),
                      'username':mark_safe(json.dumps(request.user.username)),
+                     'file': mark_safe(json.dumps(songs)),
                 })
             else:
                 return render(request,'roomlisten/notify.html',{
@@ -39,6 +60,7 @@ def RoomListen(request, room_name):
     return render(request, 'roomlisten/roomlisten.html', {
         'room_name_json': mark_safe(json.dumps(room_name)),
         'username':mark_safe(json.dumps(request.user.username)),
+        'file': mark_safe(json.dumps(songs)),
     })
 
 @login_required
@@ -219,7 +241,6 @@ def messages_to_json(messages):
         result.append(message_to_json(message))
 
     return result
-
 
 def message_to_json(message):
     return{
