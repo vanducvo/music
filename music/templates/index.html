@@ -36,7 +36,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- Meters graphs -->
 	<script src="{% static 'js/jquery-2.1.4.js' %}"></script>
 	{% block header %}
-	
+
 	{% endblock header %}
 
 </head>
@@ -191,7 +191,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 		</div>
 		{% block addmodal %}
-		
+
 		{% endblock addmodal %}
 		<!-- //signup -->
 		<!-- /w3l-agile -->
@@ -208,22 +208,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<div class="profile_details">
 						<div class="col-md-4 serch-part">
 							<div id="sb-search" class="sb-search">
-								<form action="{% url 'search_result' %}" name="searchform" id="searchformid" method="POST" >
+								<form action="{% url 'search_result' %}" name="searchform" id="searchformid"
+									method="POST">
 									{% csrf_token %}
-									<div id="alertsearch_placeholder"></div>
-								<input class="sb-search-input" placeholder="Search" type="search" name="searchtext" id="searchid">
-								<input  id="searchbutton" class="sb-search-submit" type="submit" value="">
-								<ul id="search-results"></ul>
-								<span class="sb-icon-search"> </span>
-							</form>
+									<input class="sb-search-input" placeholder="Search...." type="text"
+										name="searchtext" id="searchid" value autocomplete="off">
+									<input id="searchbutton" class="sb-search-submit" type="submit" value="">
+									<span class="sb-icon-search"> </span>
+								</form>
 							</div>
 						</div>
-						<!-- search-scripts -->
+
+						<!-- search-scripts-->
 						<script src="{% static 'js/classie.js' %}"></script>
 						<script src="{% static 'js/uisearch.js' %}"></script>
 						<script>
 							new UISearch(document.getElementById('sb-search'));
-						</script>
+						</script> 
 						<!-- //search-scripts -->
 						<!---->
 						<div class="col-md-4 player">
@@ -268,15 +269,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							</ul>
 						</div>
 						<div class="col-md-4 login-pop">
-
 							{% if user.is_authenticated%}
-							
-							
-							
-							
-							
 							<p id="p_usernameid">
-								Xin chào 
+								Xin chào	
 								<a href="#" data-toggle="modal" id="a_username_id"
 									data-target="#Modal_Info"><span>{{ user.username }}</span></a></li>
 								!!!
@@ -348,12 +343,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 													name="username" value="{{ user.username }}">
 												<div class="clearfix"></div>
 												<label for="lname"><b>Mật khẩu:</b></label>
-												<input class="input" type="password" id="passwordid1" name="password" value="Nhập Password" onfocus="this.value = '';"
+												<input class="input" type="password" id="passwordid1" name="password"
+													value="Nhập Password" onfocus="this.value = '';"
 													onblur="if (this.value == '') {this.value = 'Nhập Password';}"
 													required="">
 												<div class="clearfix"></div>
 												<label for="lname"><b>Mật khẩu mới:</b></label>
-												<input id="newpasswordid" class="input" type="password" name="newpassword" value="Nhập Password" onfocus="this.value = '';"
+												<input id="newpasswordid" class="input" type="password"
+													name="newpassword" value="Nhập Password" onfocus="this.value = '';"
 													onblur="if (this.value == '') {this.value = 'Nhập Password';}"
 													required="">
 												<div class="clearfix"></div>
@@ -417,6 +414,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			{% block content %}
 
 			{% endblock content %}
+			<div id="disb">
+				<ul id="search-results"></ul>	
+			</div>
+		
 		</div>
 		<!--body wrapper start-->
 
@@ -555,7 +556,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		}
 	</script>
 	{% block script %}
-	
+
 	{% endblock script %}
 	<script>
 		function showalertchange(message) {
@@ -608,19 +609,67 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							$("#alertdiv").remove();
 						}, 5000);
 					},
-					error:function(xhr, ajaxOptions, thrownError){
-                            switch(xhr.status){
-                                case 417:
-										showalertchange("Sai mật khẩu!");
-                                        break;
-                            }
-                            
-                        }
+					error: function (xhr, ajaxOptions, thrownError) {
+						switch (xhr.status) {
+							case 417:
+								showalertchange("Sai mật khẩu!");
+								break;
+						}
+
+					}
 				});
 			}
 		});                                    
 	</script>
-	
+	<script>
+		$("#searchid").keydown(function (e) {
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+			var search = $('#searchid').val();
+			
+			if (keycode != '13') {
+				$.ajax({
+					url: "{% url 'search_result' %}",
+					type: "POST",
+					data: {
+						search_string: $('#searchid').val(),
+						csrfmiddlewaretoken: '{{csrf_token}}'
+					},
+					dataType: 'json',
+					success: function (response) {	
+						$("#search-results").empty();
+						if ( response.length > 0 && search!=""){
+							if(response[0].length > 0){
+								$("#search-results").append('<img class="icon_songs" src="{% static "images/iconmusic.jpeg" %}" width="70px" height="70px" alt="error">');
+								$("#search-results").append('<span class="title_search">Bài hát</span>');
+								$("#search-results").append('<div class="clearfix"> </div>');
+								for (var i = 0; i <  response[0].length; i++) {
+									var id = response[0][i].id;
+									var name = response[0][i].name;
+									var title = response[0][i].title;
+									$("#search-results").append('<li><a class="element_search" href = "/song/' + id + '/">' + title +' - '+ name + '</a></li>');
+								}
+							}
+							if(response[1].length > 0){
+								$("#search-results").append('<img class="icon_songs" src="{% static "images/iconartist.png" %}" width="70px" height="70px" alt="error">');
+								$("#search-results").append('<span class="title_search">Nghệ sĩ</span>');
+								$("#search-results").append('<div class="clearfix"> </div>');
+								for (var i = 0; i <  response[1].length; i++) {
+									var id = response[1][i].id;
+									var name = response[1][i].name;
+									$("#search-results").append('<span class="title_search_ar">'+name+'</span>');
+									for(var j = 0; j < response[3].length;j++){
+										if(name == response[3][j].name)
+										$("#search-results").append('<li><a class="element_search" href = "/song/' + response[2][j].id + '/">' + response[2][j].title + '</a></li>');
+									}
+								}
+							}
+						}
+
+					},
+				});
+			}
+		});
+	</script>
 </body>
 
 </html>

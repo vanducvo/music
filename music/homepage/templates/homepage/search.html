@@ -161,12 +161,12 @@
                     <div class="clearfix"> </div>
                 </div>
                 <ul class="statuss">
-                    {% for a in content.t_artist %}
+                    {% for a in content.s_artist %}
                     <h3>{{a.name}}</h3>
-                    {% for p in content.result_artist %}
+                    {% for p in content.artist %}
                     {% if p.artist == a %}
                     <div class="col-md-3 artist-grid">
-                        <a href="/song/{{p.song.id}}/"><img src="/media/{{p.song.image}}" title="allbum-name"></a>
+                        <a href="/song/{{p.song.id}}/"><img src="/media/{{p.song.image}}" title="allbum-name" alt="error"></a>
                         <a href="/song/{{p.song.id}}/"><i class="glyphicon glyphicon-play-circle"></i></a>
                         <a class="art" href="/song/{{p.song.id}}/">{{p.song.title}} <br> {{p.artist.name}}</a>
                     </div>
