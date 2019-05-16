@@ -89,8 +89,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dbmusic',
-        'USER': 'root',
-        'PASSWORD': 'tiendat123',
+        'USER': 'music',
+        'PASSWORD': 'yvplcP46FWg9mOAd!',
         'HOST': 'localhost',
         'PORT': '3306',
     }
