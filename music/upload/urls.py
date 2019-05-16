@@ -9,7 +9,7 @@ urlpatterns = [
     path('song/add/',views.Add_song),
     path('artist/',views.Artist),
     path('artist/add/',views.Add_artist),
-    path('',SongListView.as_view()),
+    path('',SongListView.as_view(), name='upload'),
     re_path(r'^edit/(?P<pk>\d+)/$',EditListView.as_view(), name='edit_song'),
     re_path(r'^delete/(?P<pk>\d+)/$',views.Delete, name='delete_song'),
     path('edit/x/',views.X),

@@ -11,6 +11,8 @@ from collections import namedtuple
 def Homepage(request):
     return render(request,'homepage/homepage.html')
 
+def Contact(request):
+    return render(request,'homepage/contact.html')
 
 def SignUp(request):
     user = models.User()

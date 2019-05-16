@@ -37,9 +37,9 @@ class RoomListen(models.Model):
 
 #Playist Entity
 class Playist(models.Model):
-    name = models.CharField(max_length = 100, blank=True, null = True)
+    name = models.CharField(max_length = 100)
     room = models.ForeignKey(RoomListen, on_delete = models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(User, on_delete = models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete = models.DO_NOTHING, blank=True, null = True)
 
 #Messenge Entity
 class Messenge(models.Model):

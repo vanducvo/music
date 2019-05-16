@@ -6,6 +6,7 @@ from db import models
 from django.contrib.auth.hashers import make_password, check_password
 from django.db.models import Q
 from django.template.defaultfilters import slugify
+from django.conf import settings
 import json
 import eyed3
 
@@ -22,9 +23,9 @@ def RoomListen(request, room_name):
     room = room[0]
     playsist = models.SongInPlayist.objects.filter(playist__room__pk__exact=room.pk)
     songs = []
-    i = 0
+    i = 1
     for song in playsist:
-        time = eyed3.load('/home/ducvovan/Source/main/music/music/' + song.song.audio.url).info.time_secs
+        time = eyed3.load(settings.MEDIA_ROOT + song.song.audio.url[6:]).info.time_secs
         duration = str(int(time/60)) + ":" + str(int(time)%60).zfill(2)
         songname = song.song.title
         artists =  models.ArtistSingSong.objects.filter(song__pk__exact=song.song.pk)

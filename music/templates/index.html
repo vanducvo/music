@@ -42,7 +42,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </head>
 <!-- /w3layouts-agile -->
 
-<body class="sticky-header left-side-collapsed" onload="initMap()">
+<body class="sticky-header left-side-collapsed" onload="">
 	<section>
 		<!-- left side start-->
 		<div class="left-side sticky-left-side">
@@ -60,32 +60,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 				<!--sidebar nav start-->
 				<ul class="nav nav-pills nav-stacked custom-nav">
-					<li class="active"><a href="{% url 'home' %}"><i class="lnr lnr-home"></i><span>Home</span></a></li>
-					<li><a href="radio.html"><i class="camera"></i> <span>Radio</span></a></li>
-					<li><a href="#" data-toggle="modal" data-target="#myModal1"><i
-								class="fa fa-th"></i><span>Apps</span></a></li>
-					<li><a href="radio.html"><i class="lnr lnr-users"></i> <span>Artists</span></a></li>
-					<li><a href="upload/"><i class="lnr lnr-music-note"></i> <span>Upload</span></a></li>
-					<li class="menu-list"><a href="browse.html"><i class="lnr lnr-indent-increase"></i>
-							<span>Browser</span></a>
-						<ul class="sub-menu-list">
-							<li><a href="browse.html">Artists</a> </li>
-							<li><a href="404.html">Services</a> </li>
-						</ul>
-					</li>
-					<li><a href="blog.html"><i class="lnr lnr-book"></i><span>Blog</span></a></li>
-					<li><a href="typography.html"><i class="lnr lnr-pencil"></i> <span>Typography</span></a></li>
-					<li class="menu-list"><a href="#"><i class="lnr lnr-heart"></i> <span>My Favourities</span></a>
-						<ul class="sub-menu-list">
-							<li><a href="radio.html">All Songs</a></li>
-						</ul>
-					</li>
-					<li class="menu-list"><a href="contact.html"><i
-								class="fa fa-thumb-tack"></i><span>Contact</span></a>
-						<ul class="sub-menu-list">
-							<li><a href="contact.html">Location</a> </li>
-						</ul>
-					</li>
+					<li class="active"><a href="{% url 'home' %}"><i class="lnr lnr-home"></i><span>Trang Chủ</span></a></li>
+					<li><a href="{% url 'roomlisten' %}"><i class="camera"></i> <span>Nghe Nhạc Chung</span></a></li>
+					<li><a href="{% url 'upload' %}"><i class="lnr lnr-music-note"></i> <span>Đóng Góp Nhạc</span></a></li>
+					<li><a href="{% url 'contact' %}"><i class="fa fa-thumb-tack"></i> <span>Liên Hệ</span></a></li>
 				</ul>
 				<!--sidebar nav end-->
 			</div>
@@ -229,44 +207,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<!---->
 						<div class="col-md-4 player">
 							<div class="audio-player">
-								<audio id="audio-player" controls="controls">
-									<source src="media/Blue Browne.ogg" type="audio/ogg">
-									</source>
-									<source src="media/Blue Browne.mp3" type="audio/mpeg">
-									</source>
-									<source src="media/Georgia.ogg" type="audio/ogg">
-									</source>
-									<source src="media/Georgia.mp3" type="audio/mpeg">
-									</source></audio>
+	
 							</div>
-							<!---->
-							<script type="text/javascript">
-								$(function () {
-									$('#audio-player').mediaelementplayer({
-										alwaysShowControls: true,
-										features: ['playpause', 'progress', 'volume'],
-										audioVolume: 'horizontal',
-										iPadUseNativeControls: true,
-										iPhoneUseNativeControls: true,
-										AndroidUseNativeControls: true
-									});
-								});
-							</script>
-							<!--audio-->
+
 							<link rel="stylesheet" type="text/css" media="all" href="{% static 'css/audio.css' %}">
-							<script type="text/javascript" src="{% static 'js/mediaelement-and-player.min.js' %}">
-							</script>
-							<!---->
+					
 
 
 							<!--//-->
-							<ul class="next-top">
-								<li><a class="ar" href="#"> <img src="{% static 'images/arrow.png' %}" alt="" /></a>
-								</li>
-								<li><a class="ar2" href="#"><img src="{% static 'images/arrow2.png' %}"
-											alt="" /></i></a></li>
-
-							</ul>
 						</div>
 						<div class="col-md-4 login-pop">
 							{% if user.is_authenticated%}
@@ -291,7 +239,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 											<h2 class="h2-modal">Thông tin cá nhân</h2>
 										</div>
 										<div class="modal-body">
-											<form action='#' name="signupform" id="signupformid" method="POST">
+											<form action='#' name="infoform" id="infoformid" method="POST">
 												<label for="lname"><b>Tên:</b></label>
 												<input class="input" readonly="true" type="text" name="lname"
 													value="{{ user.last_name }}">
@@ -355,7 +303,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 													required="">
 												<div class="clearfix"></div>
 												<label for="lname"><b>Nhập lại mật khẩu mới:</b></label>
-												<input class="input" type="password" id="passwordid" name="repassword"
+												<input class="input" type="password" id="repasswordid" name="repassword"
 													value="Nhập Password" onfocus="this.value = '';"
 													onblur="if (this.value == '') {this.value = 'Nhập Password';}"
 													required="">
@@ -420,34 +368,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		
 		</div>
 		<!--body wrapper start-->
-
-		<script type="text/javascript">
-			$(window).load(function () {
-
-				$("#flexiselDemo1").flexisel({
-					visibleItems: 5,
-					animationSpeed: 1000,
-					autoPlay: true,
-					autoPlaySpeed: 3000,
-					pauseOnHover: false,
-					enableResponsiveBreakpoints: true,
-					responsiveBreakpoints: {
-						portrait: {
-							changePoint: 480,
-							visibleItems: 2
-						},
-						landscape: {
-							changePoint: 640,
-							visibleItems: 3
-						},
-						tablet: {
-							changePoint: 800,
-							visibleItems: 4
-						}
-					}
-				});
-			});
-		</script>
 		<script type="text/javascript" src="{% static 'js/jquery.flexisel.js' %}"></script>
 		</div>
 		</div>

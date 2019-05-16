@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from django.conf import settings
 from db import models
 from django.utils.safestring import mark_safe
 from django.db.models import Q
@@ -21,7 +21,7 @@ def index(request, song_id):
         })
 
     maintitle = mainsong[0].song.title
-    time = eyed3.load('/home/ducvovan/Source/main/music/music/' + mainsong[0].song.audio.url).info.time_secs
+    time = eyed3.load(settings.MEDIA_ROOT + mainsong[0].song.audio.url[6:]).info.time_secs
     duration = str(int(time/60)) + ":" + str(int(time)%60).zfill(2)
 
     for artist in mainsong:
