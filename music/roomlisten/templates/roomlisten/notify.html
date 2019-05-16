@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+{% load static from staticfiles %}
+{% block content %}
+<div class="error-top">
+    <img src="{% static 'images/siren.png' %}" alt="" />
+    <h3>{{infor}}<h3>
+            <div class="clearfix"></div>
+
+            <div class="error">
+                <a class="not" href="/roomlisten/">Trở Về </a>
+            </div>
+
+            <!-- //error_page -->
+</div>
+{% endblock content %}

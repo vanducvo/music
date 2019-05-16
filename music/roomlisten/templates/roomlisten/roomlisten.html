@@ -39,7 +39,7 @@
         justify-content: center;
         align-items: center;
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-        float: right;
+        float: left;
     }
 
     .chat-item {
@@ -108,27 +108,331 @@
         float: left;
     }
 </style>
+<style>
+    /* Font Family
+================================================== */
+
+    @import url('https://fonts.googleapis.com/css?family=Oxygen:300,400,700');
+
+
+    /* Global Styles
+================================================== */
+
+    .playist {
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-size-adjust: 100%;
+        background-color: #f9f9f9;
+        color: #111;
+        font-size: 1.05rem;
+        font-family: "Oxygen", HelveticaNeue, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-weight: 300;
+        letter-spacing: .025rem;
+        line-height: 1.618;
+        padding: 1rem 0;
+    }
+
+    .playist,
+    ::before,
+    ::after {
+        box-sizing: border-box;
+    }
+
+    .playist {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-tap-highlight-color: transparent;
+    }
+
+
+    /* Setup
+================================================== */
+
+    .container {
+        position: relative;
+        margin: 0 auto;
+        max-width: 800px;
+        width: 100%;
+    }
+
+    .column {
+        width: inherit;
+    }
+
+
+    /* Typography / Links
+================================================== */
+
+    .playist p {
+        color: #fff;
+        display: block;
+        font-size: .9rem;
+        font-weight: 400;
+        margin: 0 0 2px;
+    }
+
+    .playist a,
+    a:visited {
+        color: #8cc3e6;
+        outline: 0;
+        text-decoration: underline;
+    }
+
+    .playist a:hover,
+    a:focus {
+        color: #bbdef5;
+    }
+
+    .playist p a,
+    p a:visited {
+        line-height: inherit;
+    }
+
+
+    /* Misc.
+================================================== */
+
+    .playist .add-bottom {
+        margin-bottom: 2rem !important;
+    }
+
+    .playist .left {
+        float: left;
+    }
+
+    .playist .right {
+        float: right;
+    }
+
+    .playist .center {
+        text-align: center;
+    }
+
+    .playist .hidden {
+        display: none;
+    }
+
+    .playist .no-support {
+        margin: 2rem auto;
+        text-align: center;
+        width: 90%;
+    }
+
+
+    /* Audio Player Styles
+================================================== */
+
+    .playist audio {
+        display: none;
+    }
+
+    #audiowrap,
+    #plwrap {
+        margin: 0 auto;
+    }
+
+    #plwrap{
+        overflow-y: hidden;
+        scroll-behavior: auto;
+        max-height: 400px;
+    }
+
+    #plwrap:hover{
+        overflow-y: auto;
+    }
+
+    #tracks {
+        font-size: 0;
+        position: relative;
+        text-align: center;
+    }
+
+    #nowPlay {
+        display: block;
+        font-size: 0;
+    }
+
+    #nowPlay span {
+        display: inline-block;
+        font-size: 1.05rem;
+        vertical-align: top;
+    }
+
+    #nowPlay span#npAction {
+        padding: 21px;
+        width: 30%;
+    }
+
+    #nowPlay span#npTitle {
+        padding: 21px;
+        text-align: right;
+        width: 70%;
+    }
+
+    #plList li {
+        cursor: pointer;
+        display: block;
+        margin: 0;
+        padding: 21px 0;
+    }
+
+    #plList li:hover {
+        background-color: rgba(0, 0, 0, .1);
+    }
+
+    .plItem {
+        position: relative;
+    }
+
+    .plTitle {
+        left: 50px;
+        overflow: hidden;
+        position: absolute;
+        right: 65px;
+        text-overflow: ellipsis;
+        top: 0;
+        white-space: nowrap;
+    }
+
+    .plNum {
+        padding-left: 21px;
+        width: 25px;
+    }
+
+    .plLength {
+        padding-left: 21px;
+        position: absolute;
+        right: 21px;
+        top: 0;
+    }
+
+    .plSel,
+    .plSel:hover {
+        background-color: rgba(0, 0, 0, .1);
+        color: #337ab7;
+        cursor: default !important;
+    }
+
+    #tracks a {
+        border-radius: 3px;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 2rem;
+        height: 35px;
+        line-height: .175;
+        margin: 0 5px 30px;
+        padding: 10px;
+        text-decoration: none;
+        transition: background .3s ease;
+    }
+
+    #tracks a:last-child {
+        margin-left: 0;
+    }
+
+    #tracks a:hover,
+    #tracks a:active {
+        background-color: rgba(0, 0, 0, .1);
+        color: #fff;
+    }
+
+    #tracks a::-moz-focus-inner {
+        border: 0;
+        padding: 0;
+    }
+
+
+    /* Plyr Overrides
+================================================== */
+
+    .plyr--audio .plyr__controls {
+        background-color: transparent;
+        border: none;
+        color: #fff;
+        padding: 20px 20px 20px 13px;
+        width: 100%;
+    }
+
+    .plyr--audio .plyr__controls button.tab-focus:focus,
+    .plyr--audio .plyr__controls button:hover,
+    .plyr__play-large {
+        background: rgba(0, 0, 0, .1);
+    }
+
+    .plyr__progress--played,
+    .plyr__volume--display {
+        color: rgba(0, 0, 0, .1);
+    }
+
+    .plyr--audio .plyr__progress--buffer,
+    .plyr--audio .plyr__volume--display {
+        background: rgba(0, 0, 0, .1);
+    }
+
+    .plyr--audio .plyr__progress--buffer {
+        color: rgba(0, 0, 0, .1);
+    }
+
+
+    /* Media Queries
+================================================== */
+
+    @media only screen and (max-width:600px) {
+        #nowPlay span#npAction {
+            display: none;
+        }
+
+        #nowPlay span#npTitle {
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+    }
+</style>
+<link rel="stylesheet" href="{% static 'css/plyr.css'%}">
 {% endblock header %}
 
 {% block content %}
 <div id="page-wrapper">
-
+    <div class="tittle-head">
+        <h3 class="tittle">Nghe Nhạc Chung <span class="new"></span></h3>
+        <div class="clearfix"> </div>
+    </div>
     <div class="inner-content single">
         <!--/music-right-->
-        <div>
-            <div class="tittle-head listenroom">
-                <h3 class="tittle">Nghe Nhạc Chung <span class="new"></span></h3>
-                <div class="clearfix"> </div>
-            </div>
-        </div>
 
-        <div class="wrapper">
+
+        <div class="wrapper single_left">
             <section class="chat-interface">
             </section>
             <section class="new-message">
                 <input type="text" class="message-body" placeholder="Enter your message">
                 <input type="submit" class="message-button" value="Send">
             </section>
+        </div>
+        <div class = "response">
+            <div class="playist">
+                <div class="container">
+                    <div class="column add-bottom">
+                        <div id="mainwrap">
+                            <div id="nowPlay">
+                                <span id="npAction">Paused...</span><span id="npTitle"></span>
+                            </div>
+                            <div id="audiowrap">
+                                <div id="audio0">
+                                    <audio id="audio1" preload controls>Your browser does not support HTML5 Audio!
+                                        😢</audio>
+                                </div>
+                                <div id="tracks">
+                                    <a id="btnPrev">&larr;</a><a id="btnNext">&rarr;</a>
+                                </div>
+                            </div>
+                            <div id="plwrap">
+                                <ul id="plList"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- /agileits -->
         <div class="clearfix"> </div>
@@ -137,7 +441,8 @@
     {% endblock content %}
 
     {% block script %}
-    <script src = "{% static 'js/reconnecting-websocket.js' %}"></script>
+    <script src="{% static 'js/reconnecting-websocket.js' %}"></script>
+    <script src="{% static 'js/plyr.js' %}"></script>
     <script>
         var username = {{username}};
         var roomName = {{room_name_json}};
@@ -146,7 +451,7 @@
         var chatSocket = new ReconnectingWebSocket(
             'ws://' + window.location.host +
             '/ws/roomlisten/chat/' + roomName + '/');
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.new').text("Phòng: " + roomName);
         });
         chatSocket.onopen = function (e) {
@@ -156,17 +461,17 @@
         chatSocket.onmessage = function (e) {
             var data = JSON.parse(e.data);
 
-            if(data['command'] === 'messages'){
+            if (data['command'] === 'messages') {
                 data['messages'].reverse();
-                for(let i = 0; i < data['messages'].length; i++)
-                createMessege(data['messages'][i], 0)
-            }else if (data['command'] === 'new_messages' ){
+                for (let i = 0; i < data['messages'].length; i++)
+                    createMessege(data['messages'][i], 0)
+            } else if (data['command'] === 'new_messages') {
                 createMessege(data['message'], 0);
                 offset = offset + 1;
             }
             $(".chat-interface").animate({
                 scrollTop: $(document).height()
-                }, "fast");
+            }, "fast");
         };
 
         chatSocket.onclose = function (e) {
@@ -204,10 +509,12 @@
         }
 
         function fetchMessages() {
-            chatSocket.send(JSON.stringify({'command': 'fetch_messages' }));
+            chatSocket.send(JSON.stringify({
+                'command': 'fetch_messages'
+            }));
         }
 
-        function createMessege(data, type){
+        function createMessege(data, type) {
             var author = data['author'];
             var message = data['message'];
             const chatInterface = document.querySelector(".chat-interface");
@@ -215,7 +522,7 @@
             // Create chat item & set styles
             const chatItem = document.createElement("figure");
             chatItem.classList.add("chat-item");
-            
+
 
             // Create chat message image
             const chatImg = document.createElement("img");
@@ -223,57 +530,170 @@
             chatImg.setAttribute("class", "chat-item_image");
             // Create & style chat message body
             const chatBody = document.createElement("figcaption");
-            if(author === username){
+            if (author === username) {
                 chatBody.classList.add("chat-item_body", "alt");
                 chatItem.style.flexDirection = "row-reverse";
-            }else{
+            } else {
                 chatBody.classList.add("chat-item_body");
                 chatItem.style.flexDirection = "row";
             }
-            
+
             chatItem.style.alignSelf = "flex-end";
-            chatBody.textContent = message + '\n' + 'from: ' + author +'\n';
+            chatBody.textContent = message + '\n' + 'from: ' + author + '\n';
 
             // Append chat parts to chat item
             chatItem.append(chatImg, chatBody);
 
             // Append chat item to chat interface
-            if(type === 0){
+            if (type === 0) {
                 chatInterface.appendChild(chatItem);
                 chatMessage.value = "";
-            }
-            else{
+            } else {
                 chatInterface.prepend(chatItem)
             }
 
             // Clear inputs
         };
-        
-        $(".chat-interface").scroll(function() {
-            if($('.chat-interface').scrollTop() === 0){
+
+        $(".chat-interface").scroll(function () {
+            if ($('.chat-interface').scrollTop() === 0) {
                 $.ajax({
                     type: 'GET',
                     dataType: 'json',
                     url: '/roomlisten/loadmore/',
-                    data:{
+                    data: {
                         csrfmiddlewaretoken: '{{ csrf_token }}',
                         time: n,
                         align: offset,
                         room: roomName,
                     },
-                    success: function(json){
+                    success: function (json) {
                         var scrollh = 0;
-                        for(let i = 0; i < json['messages'].length; i++){
+                        for (let i = 0; i < json['messages'].length; i++) {
                             createMessege(json['messages'][i], 1);
                             scrollh = scrollh + $(".chat-item_body")[0].offsetHeight;
                         }
                         $(".chat-interface").animate({
                             scrollTop: scrollh
-                            }, "fast");
+                        }, "fast");
                     }
                 });
                 n = n + 1;
             }
         });
     </script>
-{% endblock script %}
+    <script>
+        jQuery(function ($) {
+            'use strict'
+            var supportsAudio = !!document.createElement('audio').canPlayType;
+            if (supportsAudio) {
+                // initialize plyr
+                var player = new Plyr('#audio1', {
+                    controls: [
+                        'restart',
+                        'play',
+                        'progress',
+                        'current-time',
+                        'duration',
+                        'mute',
+                        'volume',
+                        'repeat',
+                    ]
+                });
+                // initialize playlist and controls
+                var index = 0,
+                    playing = false,
+                    mediaPath = '',
+                    extension = '',
+                    tracks = {{file}},
+                    buildPlaylist = $(tracks).each(function (key, value) {
+                        var trackNumber = value.track,
+                            trackName = value.name,
+                            trackDuration = value.duration;
+                        if (trackNumber.toString().length === 1) {
+                            trackNumber = '0' + trackNumber;
+                        }
+                        $('#plList').append('<li> \
+                    <div class="plItem"> \
+                        <span class="plNum">' + trackNumber + '.</span> \
+                        <span class="plTitle">' + trackName + '</span> \
+                        <span class="plLength">' + trackDuration + '</span> \
+                    </div> \
+                </li>');
+                    }),
+                    trackCount = tracks.length,
+                    npAction = $('#npAction'),
+                    npTitle = $('#npTitle'),
+                    audio = $('#audio1').on('play', function () {
+                        playing = true;
+                        npAction.text('Now Playing...');
+                    }).on('pause', function () {
+                        playing = false;
+                        npAction.text('Paused...');
+                    }).on('ended', function () {
+                        npAction.text('Paused...');
+                        if ((index + 1) < trackCount) {
+                            index++;
+                            loadTrack(index);
+                            audio.play();
+                        } else {
+                            audio.pause();
+                            index = 0;
+                            loadTrack(index);
+                        }
+                    }).get(0),
+                    btnPrev = $('#btnPrev').on('click', function () {
+                        if ((index - 1) > -1) {
+                            index--;
+                            loadTrack(index);
+                            if (playing) {
+                                audio.play();
+                            }
+                        } else {
+                            audio.pause();
+                            index = 0;
+                            loadTrack(index);
+                        }
+                    }),
+                    btnNext = $('#btnNext').on('click', function () {
+                        if ((index + 1) < trackCount) {
+                            index++;
+                            loadTrack(index);
+                            if (playing) {
+                                audio.play();
+                            }
+                        } else {
+                            audio.pause();
+                            index = 0;
+                            loadTrack(index);
+                        }
+                    }),
+                    li = $('#plList li').on('click', function () {
+                        var id = parseInt($(this).index());
+                        if (id !== index) {
+                            playTrack(id);
+                        }
+                    }),
+                    loadTrack = function (id) {
+                        $('.plSel').removeClass('plSel');
+                        $('#plList li:eq(' + id + ')').addClass('plSel');
+                        npTitle.text(tracks[id].name);
+                        index = id;
+                        audio.src =tracks[id].file;
+                    },
+                    playTrack = function (id) {
+                        loadTrack(id);
+                        audio.play();
+                    };
+                extension = audio.canPlayType('audio/mpeg') ? '.mp3' : audio.canPlayType('audio/ogg') ? '.ogg' :
+                    '';
+                loadTrack(index);
+            } else {
+                // boo hoo
+                $('.column').addClass('hidden');
+                var noSupport = $('#audio1').text();
+                $('.container').append('<p class="no-support">' + noSupport + '</p>');
+            }
+        });
+    </script>
+    {% endblock script %}

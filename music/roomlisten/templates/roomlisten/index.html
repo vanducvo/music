@@ -1,4 +1,78 @@
 {% extends "index.html" %}
+{% block header %}
+<style>
+
+
+    .litlesearch {
+    box-sizing: border-box;
+    }
+
+
+    /*the container must be positioned relative:*/
+    .litlesearch .autocomplete {
+    position: relative;
+    display: inline-block;
+    }
+
+    .litlesearch input, button {
+    border: 1px solid transparent;
+    background-color: #f1f1f1;
+    padding: 10px;
+    font-size: 16px;
+    }
+
+    .litlesearch input[type=text] {
+    background-color: #f1f1f1;
+    width: 100%;
+    }
+
+    .litlesearch input[type=submit], button {
+    background-color: DodgerBlue;
+    color: #fff;
+    cursor: pointer;
+    }
+
+    .litlesearch .autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+    }
+
+    .litlesearch .autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff; 
+    border-bottom: 1px solid #d4d4d4; 
+    }
+
+    /*when hovering an item:*/
+    .litlesearch .autocomplete-items div:hover {
+    background-color: #e9e9e9; 
+    }
+
+    /*when navigating through the items using the arrow keys:*/
+    .litlesearch .autocomplete-active {
+    background-color: DodgerBlue !important; 
+    color: #ffffff; 
+    }
+
+    .listsong{
+        max-height: 300px;
+        overflow: hidden;
+    }
+
+    .listsong:hover{
+        overflow: auto;
+    }
+</style>
+
+{% endblock header %}
 {% block addmodal %}
 <div class="modal fade" id="CreateRoomModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -26,8 +100,8 @@
                                 <input type="text" id="topicid" name="topic" value="Nhập Chủ Đề"
                                     onfocus="this.value = '';"
                                     onblur="if (this.value == '') {this.value = 'Nhập Chủ Đề';}" required="">
-                                <input type="password" id="roompasswordid" name="roompassword" value="Nhập Password Phòng"
-                                    onfocus="this.value = '';"
+                                <input type="password" id="roompasswordid" name="roompassword"
+                                    value="Nhập Password Phòng" onfocus="this.value = '';"
                                     onblur="if (this.value == '') {this.value = 'Nhập Password Phòng';}" required="">
 
                                 <input id="createroom" type="submit" value="Tạo Phòng">
@@ -45,8 +119,102 @@
         </div>
     </div>
 </div>
+
+<!---Model login-->
+<div class="modal" id="ModalLogin">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id ="loginroomtitle"></h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form name="loginroom" id="loginroom" method='POST' action="">
+            {% csrf_token %}
+                <input type="password" id="loginroompasswordid" name="loginroompassword" class = "form-control"
+                value="Nhập Password Phòng" onfocus="this.value = '';"
+                onblur="if (this.value == '') {this.value = 'Nhập Password Phòng';}" required="">
+                <button type="submit" class="btn btn-primary" style="margin-top: 20px">Vào Phòng</button>
+            </form>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<div class="modal" id="ModalRoomEdit">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h2 class="modal-title" id ="editroomtitle">Chỉnh Sửa Phòng</h2>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="tabbable"> <!-- Only required for left/right tabs -->
+            <ul class="nav nav-tabs">
+            <li class="active"><a href="#changeroompass" data-toggle="tab" id = "infodeafault">Thông Tin</a></li>
+            <li><a href="#addsongtoroom" data-toggle="tab">Thêm Bài Hát</a></li>
+            <li><a href="#deleteroom" data-toggle="tab">Xóa Phòng</a></li>
+            </ul>
+            <div class="tab-content">
+            <div class="tab-pane active" id="changeroompass" style="margin-top: 10px">
+                    <form name="editroomform" id="editroomformid" method='POST'>
+                        <label for="topiclabel" style="margin-top: 10px">Chủ Đề</label>
+                        <input type="text" id="topiceditid" name="topicedit" value="Nhập Chủ Đề" class = "form-control"
+                            onfocus="this.value = '';"
+                            onblur="if (this.value == '') {this.value = 'Nhập Chủ Đề';}" required="">
+                        <label for="topiclabel" style="margin-top: 10px">Password Phòng Mới</label>
+                        <p>Nếu không thay đổi không cần nhập</p>
+                        <input type="password" id="roomeditpasswordid" name="roomeditpassword" class = "form-control"
+                            value="Nhập Password Phòng" onfocus="this.value = '';"
+                            onblur="if (this.value == '') {this.value = 'Nhập Password Phòng';}" required="">
+                        <button style="margin-top: 10px" type="button" class="btn btn-success" id = "retopic">Chỉnh Sửa</button>
+                    </form>
+            </div>
+            <div class="tab-pane" id="addsongtoroom">
+                <div class = "litlesearch" style="margin: 50px">
+                    <form autocomplete="off" id="simplesearch">
+                        <div class="autocomplete" style="width:400px;">
+                            <input id="myInput" type="text" name="myCountry" placeholder="Tên Bài Hát">
+                        </div>
+                        <button id = "addsongbtn" type="button" class = "glyphicon glyphicon-plus" onclick=";"></button>
+                    </form>
+                </div>
+                <div class="listsong">
+
+                </div>
+            </div>
+
+            <div class="tab-pane" id="deleteroom">
+                <h3>Mọi Dữ Liệu Của Phòng Sẽ Bị Mất Vĩnh Viễn</h3>
+                <button id = "deleteroom" style="margin-top: 10px" type="button" class="btn btn-danger">Xác Nhận Xóa</button>
+            </div>
+            </div>
+            </div>        
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button id="closeedit" type="button" class="btn btn-danger" data-dismiss="modal" onclick="resetmodal();">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 {% endblock addmodal %}
 {% block content %}
+
+<!--Model-->
+
 <div id="page-wrapper">
     <div class="inner-content">
         <div class="music-browse">
@@ -74,9 +242,6 @@
             <div class="browse">
                 <div class="tittle-head two">
                     <h3 class="tittle">Phòng<span class="new">Của Bạn</span></h3>
-                    <a href="browse.html">
-                        <h4 class="tittle third">See all</h4>
-                    </a>
                     <div class="clearfix"> </div>
                 </div>
                 <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
@@ -84,17 +249,19 @@
                         <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
                             <div class="browse-inner">
                                 <!-- /agileits -->
-
-                                <div class="col-md-3 artist-grid">
-                                    <a href="single.html"><img src="https://picsum.photos/300/300"
-                                            title="allbum-name"></a>
-                                    <a href="single.html"><i class="glyphicon glyphicon-play-circle"></i></a>
-                                    <a class="art" href="single.html">Sukhwinder singh</a>
+                                {% for room in yourroom %}
+                                <div class="col-md-3 artist-grid" id="{{room.name}}">
+                                    <a href="/roomlisten/chat/{{room.name}}"><img src="https://source.unsplash.com/300x300" title="allbum-name"></a>
+                                    <a href="/roomlisten/chat/{{room.name}}"><i class="glyphicon glyphicon-play-circle"></i></a>
+                                    <a class="art" href="/roomlisten/chat/{{room.name}}">{{room.topic}}</a>
+                                    <a href="#" data-toggle="modal" data-target="#ModalRoomEdit" onclick="selecteditroom('{{room.name}}')"><i class = "glyphicon glyphicon-pencil"></i></a>
                                 </div>
+                                {% endfor %}
                                 <div class="col-md-3 artist-grid">
-                                    <a data-toggle="modal" data-target="#CreateRoomModal"><img src="https://picsum.photos/300/300"
-                                            title="allbum-name"></a>
-                                    <a href="#" data-toggle="modal" data-target="#CreateRoomModal"><i class=" glyphicon glyphicon-plus-sign"></i></a>
+                                    <a data-toggle="modal" data-target="#CreateRoomModal"><img
+                                            src="https://source.unsplash.com/300x300" title="allbum-name"></a>
+                                    <a href="#" data-toggle="modal" data-target="#CreateRoomModal"><i
+                                            class=" glyphicon glyphicon-plus-sign"></i></a>
                                     <a class="art" data-toggle="modal" data-target="#CreateRoomModal">Thêm Phòng Mới</a>
                                 </div>
                                 <div class="clearfix"> </div>
@@ -111,83 +278,15 @@
         <div class="albums fourth">
             <div class="tittle-head two">
                 <h3 class="tittle">Phòng<span class="new">Phòng Khác</span></h3>
-                <a href="browse.html">
-                    <h4 class="tittle third">See all</h4>
-                </a>
                 <div class="clearfix"> </div>
             </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v11.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
+            {% for room in otherroom %}
+            <div class="col-md-3 artist-grid" id="{{room.name}}">
+                <a href="#" onclick="CreateLinkToRoom('{{room.name}}','{{room.topic}}')" data-toggle="modal" data-target="#ModalLogin"><img src="https://source.unsplash.com/300x300" title="allbum-name"></a>
+                <a href="#" onclick="CreateLinkToRoom('{{room.name}}','{{room.topic}}')" data-toggle="modal" data-target="#ModalLogin"><i class="glyphicon glyphicon-play-circle"></i></a>
+                <a href="#" onclick="CreateLinkToRoom('{{room.name}}','{{room.topic}}')" data-toggle="modal" data-target="#ModalLogin" class="art">{{room.topic}}</a>
             </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v22.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v33.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid last-grid">
-                <a href="single.html"><img src="images/v44.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v55.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v66.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v77.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid last-grid">
-                <a href="single.html"><img src="images/v88.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v99.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v9.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v21.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
-            <div class="col-md-3 artist-grid">
-                <a href="single.html"><img src="images/v5.jpg" title="allbum-name"></a>
-                <div class="inner-info">
-                    <h5>Pop</h5>
-                </div>
-            </div>
+            {% endfor %}
             <div class="clearfix"> </div>
         </div>
     </div>
@@ -201,100 +300,332 @@
 <!-- /w3layouts-agile -->
 </div>
 <!--body wrapper end-->
-<div class="footer two">
-    <div class="footer-grid">
-        <h3>Navigation</h3>
-        <ul class="list1">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="radio.html">All Songs</a></li>
-            <li><a href="browse.html">Albums</a></li>
-            <li><a href="radio.html">New Collections</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </div>
-    <div class="footer-grid">
-        <h3>Our Account</h3>
-        <ul class="list1">
-            <li><a href="#" data-toggle="modal" data-target="#myModal5">Your Account</a></li>
-            <li><a href="#">Personal information</a></li>
-            <li><a href="#">Addresses</a></li>
-            <li><a href="#">Discount</a></li>
-            <li><a href="#">Orders history</a></li>
-            <li><a href="#">Addresses</a></li>
-            <li><a href="#">Search Terms</a></li>
-        </ul>
-    </div>
-    <div class="footer-grid">
-        <h3>Our Support</h3>
-        <ul class="list1">
-            <li><a href="contact.html">Site Map</a></li>
-            <li><a href="#">Search Terms</a></li>
-            <li><a href="#">Advanced Search</a></li>
-            <li><a href="#">Mobile</a></li>
-            <li><a href="contact.html">Contact Us</a></li>
-            <li><a href="#">Mobile</a></li>
-            <li><a href="#">Addresses</a></li>
-        </ul>
-    </div>
-    <div class="footer-grid">
-        <h3>Newsletter</h3>
-        <p class="footer_desc">Nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo
-            consequat</p>
-        <div class="search_footer">
-            <form>
-                <input type="text" placeholder="Email...." required="">
-                <input type="submit" value="Submit">
-            </form>
-        </div>
-    </div>
-    <div class="footer-grid footer-grid_last">
-        <h3>About Us</h3>
-        <p class="footer_desc">Diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat enim ad
-            minim veniam,.</p>
-        <p class="f_text">Phone: &nbsp;&nbsp;&nbsp;00-250-2131</p>
-        <p class="email">Email : &nbsp;<span><a href="mailto:mail@example.com">info(at)mailing.com</a></span></p>
-    </div>
-    <div class="clearfix"> </div>
-</div>
 </div>
 {% endblock content %}
 
 {% block script %}
 <script>
- $(document).on('submit', '#createroomformid', function(e){
-    e.preventDefault();
-    var roomname = document.forms["createroomformid"]["roomname"].value;
-    var roompassword = document.forms["createroomformid"]["roompassword"].value;
-    var topic = document.forms["createroomformid"]["topic"].value;
-    if (roomname === 'Nhập Tên Phòng' || !/^[A-Za-z][A-Za-z0-9]+$/.test(roomname)) {
-		alert("Tên phòng không hợp lệ");
-		return false;
-	}
-	if (roomname === 'Nhập Password Phòng' || !/.{5}.+/.test(roompassword)) {
-		alert("Password không hợp lệ");
-		return false;
-	}
-    if (topic === 'Nhập Chủ Đề'|| !/[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(topic)){
-        alert("Chủ đề  không hợp lệ");
-		return false;
+    function CreateLinkToRoom(name, topic){
+        $('#loginroom').attr('action', '/roomlisten/chat/'+name+'/');
+        $('#loginroomtitle').text("Nhập Mật Khẩu Để Vào Phòng: " + topic); 
     }
-    $.ajax({
-        type: 'POST',
-        url: '/roomlisten/create/',
-        data:{
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            roomname: roomname,
-            topic: topic,
-            password: roompassword,
-        },
-        success: function(e){
-            alert('Tạo thành công.');
-        },
-        error: function(e){
-            alert('Phòng đã tồn tại');
-        },
+</script>
+<script>
+    function CreateRoom(json, type) {
+        roomname = json['roomname'];
+        topic = json['topic'];
+        const BrowseInner = document.querySelector(".browse-inner");
+        const Ablums = document.querySelector(".albums");
+        const Room = document.createElement("div");
+        Room.classList.add("col-md-3", "artist-grid");
+        Room.id = roomname;
+
+        const AImage = document.createElement("a");
+        AImage.setAttribute("href", "/roomlisten/chat/" + roomname);
+        const Image = document.createElement("img");
+        Image.setAttribute("src", "https://source.unsplash.com/300x300");
+        Image.setAttribute("title", "allbum-name");
+        AImage.append(Image); //composite
+
+        const AGlyphicon = document.createElement("a");
+        AGlyphicon.setAttribute("href", "/roomlisten/chat/" + roomname);
+        const Glyphicon = document.createElement("i");
+        Glyphicon.classList.add("glyphicon", "glyphicon-play-circle");
+        AGlyphicon.append(Glyphicon);
+
+        const Art = document.createElement("a");
+        Art.setAttribute("href", "/roomlisten/chat/" + roomname);
+        Art.classList.add("art");
+        Art.textContent = topic;
+        
+        const Edit = document.createElement("a");
+        Edit.setAttribute("href", "#");
+        Edit.setAttribute( "data-toggle","modal");
+        Edit.setAttribute( "data-target", "#ModalRoomEdit");
+        Edit.setAttribute("onclick", "selecteditroom('" + roomname + "')");
+
+
+        const GlyphiconE = document.createElement("i");
+        GlyphiconE.classList.add("glyphicon", "glyphicon-pencil");
+        Edit.append(GlyphiconE);
+
+        
+        if (type === 0) {
+            Room.append(AImage, AGlyphicon, Art, Edit);
+            BrowseInner.prepend(Room);
+        } else {
+            Room.append(AImage, AGlyphicon, Art);
+            Ablums.prepend(Room);
+        }
+    }
+    $(document).on('submit', '#createroomformid', function (e) {
+        e.preventDefault();
+        var roomname = document.forms["createroomformid"]["roomname"].value;
+        var roompassword = document.forms["createroomformid"]["roompassword"].value;
+        var topic = document.forms["createroomformid"]["topic"].value;
+        if (roomname === 'Nhập Tên Phòng' || !/^[A-Za-z][A-Za-z0-9]+$/.test(roomname)) {
+            alert("Tên phòng không hợp lệ");
+            return false;
+        }
+        if (roomname === 'Nhập Password Phòng' || !/.{5}.+/.test(roompassword)) {
+            alert("Password không hợp lệ");
+            return false;
+        }
+        if (topic === 'Nhập Chủ Đề' || /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(topic)) {
+            alert("Chủ đề  không hợp lệ");
+            return false;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/roomlisten/create/',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                roomname: roomname,
+                topic: topic,
+                password: roompassword,
+            },
+            success: function (e) {
+                $('.close').trigger('click');
+
+                var json = {
+                    "roomname": roomname,
+                    "topic": topic
+                };
+                CreateRoom(json, 0);
+
+            },
+            error: function (e) {
+                alert('Phòng đã tồn tại');
+            },
+        });
     });
- });
+</script>
+<script>
+    var cmplsong = [];
+
+    
+
+    function autocomplete(inp, arr) {
+    /*the autocomplete function takes two arguments,
+    the text field element and an array of possible autocompleted values:*/
+    var currentFocus;
+    /*execute a function when someone writes in the text field:*/
+    inp.addEventListener("input", function(e) {
+        var a, b, i, val = this.value;
+        /*close any already open lists of autocompleted values*/
+        closeAllLists();
+        if (!val) { return false;}
+        currentFocus = -1;
+        /*create a DIV element that will contain the items (values):*/
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        /*append the DIV element as a child of the autocomplete container:*/
+        this.parentNode.appendChild(a);
+        /*for each item in the array...*/
+        for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+            /*create a DIV element for each matching element:*/
+            b = document.createElement("DIV");
+            /*make the matching letters bold:*/
+            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+            b.innerHTML += arr[i].substr(val.length);
+            /*insert a input field that will hold the current array item's value:*/
+            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+            /*execute a function when someone clicks on the item value (DIV element):*/
+            b.addEventListener("click", function(e) {
+                /*insert the value for the autocomplete text field:*/
+                inp.value = this.getElementsByTagName("input")[0].value;
+                /*close the list of autocompleted values,
+                (or any other open lists of autocompleted values:*/
+                closeAllLists();
+            });
+            a.appendChild(b);
+            }
+        }
+    });
+    /*execute a function presses a key on the keyboard:*/
+    inp.addEventListener("keydown", function(e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+            /*and simulate a click on the "active" item:*/
+            if (x) x[currentFocus].click();
+            }
+        }
+    });
+    function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+    }
+    function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("autocomplete-active");
+        }
+    }
+    function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+        if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+        }
+        }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+    }
+
+    
+    $("#myInput").keydown(function(e){
+        if($("#myInput").val().length == 1 || e.keyCode == 32){
+            $.ajax({
+            type: 'GET',
+            url: '/roomlisten/simplesearch/',
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                song: $("#myInput").val(),
+            },
+            success: function(json){
+                console.log(json['song']);
+                cmplsong = json['song'];
+                autocomplete(document.getElementById("myInput"), cmplsong);
+            }
+            });
+        }
+    });
+        
+        
+</script>
+<script>
+    function resetmodal(){
+        var playist = document.querySelector(".listsong");
+        playist.innerHTML = "";
+        $("#infodeafault").trigger("click");
+    }
+    function addshowsong(roomname,json){
+        const area = document.querySelector('.listsong');
+        const div = document.createElement('div');
+        div.classList.add("alert", "alert-success", "alert-dismissible");
+        const a = document.createElement('a');
+        a.classList.add("close");
+        a.setAttribute("data-dismiss", "alert");
+        a.setAttribute("aria-label", "close");
+        a.setAttribute("href", "#");
+        a.text = '×';
+        var art = json['art'];
+        var str = json["title"];
+        for (let i = 0; i < art.length; i++){
+            str = str + "-" + art[i];
+        }
+        a.setAttribute("onclick", "maniproom('" + roomname + "','delete-" + json["id"] + "')" );
+        div.appendChild(a);
+        
+        div.append(str);
+        area.appendChild(div);
+    }
+    function selecteditroom(roomname){
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/roomlisten/inforoom/',
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                name: roomname,
+            },
+            success: function(json){
+                var topic = json['infor']['topic'];
+                $('#editroomtitle').text('Chỉnh Sửa Phòng ' + topic);
+                $('#topiceditid').attr("value", topic);
+                $('#topiceditid').attr('onblur',"if (this.value == '') {this.value = '" + topic + "';}");
+                $('#addsongbtn').attr('onclick', "maniproom('" + roomname + "', 'addsong');");
+                $("#retopic").attr('onclick',"editinforroom('" + roomname + "', 'reinfo');");
+                $("#deleteroom").attr('onclick',"editinforroom('" + roomname + "', 'deleteroom');");
+                playist = json['playist'];
+                for (let i = 0; i < playist.length; i++){
+                    addshowsong(roomname, playist[i]);
+                }
+
+            }
+        });
+    }
+</script>
+<script>
+    function maniproom(roomname, command){
+        var song = $("#myInput").val();
+        var l = song.split('-');
+        $.ajax({
+            type: 'POST',
+            url: '/roomlisten/maniproom/',
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                instruct: command,
+                name: roomname,
+                song: song,
+            },
+            success: function(e){
+                if(command === 'addsong' && e.length === 1){
+                    var json = {'id': parseInt(e),'title': l.shift(),'art': l}
+                    addshowsong(roomname, json);
+                }
+            }
+        });
+    }
+
+    function editinforroom(roomname, command){
+        var topic = $("#topiceditid").val();
+        var pass = $("#roomeditpasswordid").val();
+        console.log(pass);
+        $.ajax({
+            type: 'POST',
+            url: '/roomlisten/editroom/',
+            data:{
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                command: command,
+                topic: topic,
+                password: pass,
+                roomname: roomname,
+            },
+            success: function(msg){
+                if(command === "reinfo"){
+                    $("#"+roomname).children(".art").text(topic);
+                    $('#editroomtitle').text('Chỉnh Sửa Phòng ' + topic);
+                    $("#changeroompass").append('<div id="alertdiv"  class="alert alert-success" role="alert" align="center" style="margin-top: 20px;"><a class="close" data-dismiss="alert">×</a><span>' + msg + '</span></div>')
+			        setTimeout(function () {
+				        $("#alertdiv").remove();
+			        }, 5000);
+                }else if (command === "deleteroom"){
+                    $("#closeedit").trigger("click");
+                    $("#" + roomname).remove();
+                }
+            }
+        });
+    }
 </script>
 {% endblock script %}
