@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import handler404, handler500
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +27,7 @@ urlpatterns = [
     path('upload/', include('upload.urls')),
 ]
 
-urlpatterns += staticfiles_urlpatterns()
+urlpatterns += staticfiles_urlpatterns()   
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+handler404= 'homepage.views.Error'
+handler500= 'homepage.views.Error'

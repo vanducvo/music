@@ -89,8 +89,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dbmusic',
-        'USER': 'music',
-        'PASSWORD': 'yvplcP46FWg9mOAd!',
+        'USER': 'root',
+        'PASSWORD': 'tiendat123',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -141,6 +141,6 @@ STATICFILES_DIRS = (
 
 AUTH_USER_MODEL = 'db.User'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

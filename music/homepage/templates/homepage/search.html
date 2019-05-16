@@ -1,0 +1,187 @@
+{% extends "index.html" %}
+{% load static from staticfiles %}
+{% block header %}
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:200,400');
+
+    /* Colors */
+    :root {
+        --green: #00bc84;
+        --light-grey: #dce8e8;
+        --dark-grey: #4a575b;
+    }
+
+    .wrapper {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        color: var(--dark-grey);
+    }
+
+    .chat-item_image {
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        margin: 0 1em;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        align-self: flex-end;
+    }
+
+    .message-body input[type="text"]:focus {
+        outline: none;
+    }
+
+    .wrapper {
+        width: 500px;
+        margin: 0 auto;
+        padding: 0 1em;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        float: right;
+    }
+
+    .chat-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1em;
+        overflow: hidden;
+        width: 500px;
+    }
+
+    .chat-item:nth-of-type(even) {
+        flex-direction: row-reverse;
+    }
+
+    .chat-item_body {
+        max-width: 380px;
+        padding: 1em 2em;
+        border: 1px solid var(--light-grey);
+        border-radius: 40px;
+        border-bottom-left-radius: 0;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        align-self: flex-end;
+        word-wrap: break-word;
+        white-space: pre-line;
+    }
+
+    .chat-item_body.alt {
+        background-color: var(--light-grey);
+        border-bottom-left-radius: 40px;
+        border-bottom-right-radius: 0;
+    }
+
+    .new-message {
+        margin-top: 4em;
+        margin-bottom: 2rem;
+        display: flex;
+        border: 1px solid var(--green);
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .message-body {
+        border: 0;
+        padding: 1em 2rem;
+    }
+
+    .message-button {
+        background-color: var(--green);
+        border: none;
+        padding: 0 1em;
+        color: var(--light-grey);
+        cursor: pointer;
+    }
+
+    .chat-interface {
+        height: 420px;
+        overflow-y: hidden;
+        scroll-behavior: auto;
+    }
+
+    .chat-interface:hover {
+        overflow-y: auto;
+    }
+
+    .tittle-head.listenroom {
+        float: left;
+    }
+</style>
+{% endblock header %}
+
+{% block content %}
+<div id="page-wrapper">
+    <div class="inner-content">
+        <div class="music-browse">
+            <!--albums-->
+            <!-- pop-up-box -->
+            <link href="css/popuo-box.css" rel="stylesheet" type="text/css" media="all">
+            <script src="js/jquery.magnific-popup.js" type="text/javascript"></script>
+            <script>
+                $(document).ready(function () {
+                    $('.popup-with-zoom-anim').magnificPopup({
+                        type: 'inline',
+                        fixedContentPos: false,
+                        fixedBgPos: true,
+                        overflowY: 'auto',
+                        closeBtnInside: true,
+                        preloader: false,
+                        midClick: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
+                });
+            </script>
+            <!--//pop-up-box -->
+            <div class="browse">
+                <h1 class="tittle-head two">Kết quả tìm kiếm</h1>
+                {%if content.result_song.count > 0 %}
+                <div class="tittle-head two">
+                    <h2 class="tittle">Bài hát</h2>
+                </div>
+                <ul class="statuss">
+                    {% for song in content.result_song %}
+                    <div class="col-md-3 artist-grid">
+                        <a href="/song/{{song.song.id}}/"><img src="/media/{{song.song.image}}" title="allbum-name"></a>
+                        <a href="/song/{{song.song.id}}/"><i class="glyphicon glyphicon-play-circle"></i></a>
+                        <a class="art" href="/song/{{song.song.id}}/">{{song.song.title}} <br> {{song.artist.name}}</a>
+                    </div>
+                    {% endfor %}
+                    <div class="clearfix"> </div>
+                </ul>
+                {%else%}
+                <p>Không tìm thấy bài hát"{{content.search_string}}"</p>
+                {% endif %}
+            </div>
+            <div class="review-slider">
+                {%if content.count_ar > 0 %}
+                <div class="tittle-head">
+                    <h2 class="tittle">Nghệ sĩ</h2>
+                    <div class="clearfix"> </div>
+                </div>
+                <ul class="statuss">
+                    {% for a in content.s_artist %}
+                    <h3>{{a.name}}</h3>
+                    {% for p in content.artist %}
+                    {% if p.artist == a %}
+                    <div class="col-md-3 artist-grid">
+                        <a href="/song/{{p.song.id}}/"><img src="/media/{{p.song.image}}" title="allbum-name" alt="error"></a>
+                        <a href="/song/{{p.song.id}}/"><i class="glyphicon glyphicon-play-circle"></i></a>
+                        <a class="art" href="/song/{{p.song.id}}/">{{p.song.title}} <br> {{p.artist.name}}</a>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    <div class="clearfix"> </div>
+                    {% endfor %}
+                    <div class="clearfix"> </div>
+                </ul>
+                {%else%}
+                <p>Không tìm thấy nghệ sĩ "{{content.search_string}}"</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
