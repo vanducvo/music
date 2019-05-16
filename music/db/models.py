@@ -14,7 +14,6 @@ class Song(models.Model):
     image = models.ImageField(upload_to ='image')
     audio = models.FileField(upload_to='audio')
     lyric = models.TextField()
-    genre = models.CharField(max_length = 50)
     producer =  models.ForeignKey(User, on_delete = models.DO_NOTHING)
     genre = models.CharField(max_length = 15, choices = GENRE_TYPES, default ='other')
 
