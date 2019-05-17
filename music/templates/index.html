@@ -35,6 +35,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- //lined-icons -->
 	<!-- Meters graphs -->
 	<script src="{% static 'js/jquery-2.1.4.js' %}"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="{% static 'css/audio.css' %}">
 	{% block header %}
 
 	{% endblock header %}
@@ -223,7 +224,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       									<li><a class="dropdown-item" href="{% url 'logout' %}">Đăng Xuất</a></li>
     								</ul>
   							</div>
-							<!---->
+							
 							<div id="Modal_Info" class="modal fade" role="dialog">
 								<div class="modal-dialog">
 
@@ -319,9 +320,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							{% else %}
 							<div id="loginpop"> <a href="#" id="loginButton"><span>Login <i
 											class="arrow glyphicon glyphicon-chevron-right"></i></span></a><a
-									class="top-sign" href="#" data-toggle="modal" data-target="#myModal5"><i
+									class="top-sign"  href="#" data-toggle="modal" data-target="#myModal5"><i
 										class="fa fa-sign-in"></i></a>
-								<div id="loginBox">
+								<div id="loginBox" >
 
 									<form id="loginForm" name="loginForm" method="post"
 										onsubmit="return validateLoginForm()" action='/login/'>
@@ -361,8 +362,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		
 		</div>
+
 		<!--body wrapper start-->
-		<script type="text/javascript" src="{% static 'js/jquery.flexisel.js' %}"></script>
 		</div>
 		</div>
 		<div class="clearfix"></div>
