@@ -185,15 +185,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="menu-right">
 					<div class="profile_details">
 						<div class="col-md-4 serch-part">
-							<div id="sb-search" class="sb-search">
+							<div id="sb-search" class="">
 								<form action="{% url 'search_result' %}" name="searchform" id="searchformid"
 									method="POST">
 									{% csrf_token %}
-									<input class="sb-search-input" placeholder="Search...." type="text"
-										name="searchtext" id="searchid" value autocomplete="off">
+									<input class="sb-search-input dropdown-toggle" placeholder="Search...." type="text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+										name="searchtext" id="searchid" value autocomplete="off" >
 									<input id="searchbutton" class="sb-search-submit" type="submit" value="">
 									<span class="sb-icon-search"> </span>
 								</form>
+								<!--TEST-->
+								
+								<!--TEST-->
+							</div>
+							<div id="disb">
+									<ul id="search-results"></ul>	
 							</div>
 						</div>
 
@@ -205,17 +211,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						</script> 
 						<!-- //search-scripts -->
 						<!---->
-						<div class="col-md-4 player">
-							<div class="audio-player">
-	
-							</div>
-
-							<link rel="stylesheet" type="text/css" media="all" href="{% static 'css/audio.css' %}">
-					
-
-
-							<!--//-->
-						</div>
 						<div class="col-md-4 login-pop">
 							{% if user.is_authenticated%}
 							<p id="p_usernameid">
@@ -355,6 +350,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<div class="clearfix"> </div>
 					</div>
 					<!-------->
+
 				</div>
 				<div class="clearfix"></div>
 			</div>
@@ -362,9 +358,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			{% block content %}
 
 			{% endblock content %}
-			<div id="disb">
-				<ul id="search-results"></ul>	
-			</div>
+
 		
 		</div>
 		<!--body wrapper start-->

@@ -547,7 +547,7 @@ ul.nav li a span {
     padding: 9px 0 0;
     width: 40px;
     height: 42px;
-    margin: 0.75em 0 0 2em;
+    margin: 0.4em 0 0.4em 2em;
     text-align: center;
     cursor: pointer;
     float: left;
@@ -687,7 +687,7 @@ ul.nav li a span {
    outline: none;
    background: #111;
    width: 100%;
-   height:65px;
+   height:57px;
    margin: 0;
    z-index:10;
    padding: 0em 4em 0em 1em;
@@ -709,7 +709,7 @@ ul.nav li a span {
  }
  .sb-icon-search,.sb-search-submit  {
 	 width: 70px;
-	 height: 65px;
+	 height: 57px;
 	 display: block;
 	 position: absolute;
 	 right: 1%;
@@ -733,7 +733,7 @@ ul.nav li a span {
    background: #111 url('../images/search.png') no-repeat 23px 20px;
    z-index: 90;
 	  width:70px;
-	 height:65px;
+	 height:57px;
  }
  /* Open state */
  .sb-search.sb-search-open,.no-js .sb-search {
@@ -1239,7 +1239,7 @@ fieldset#body {
 }
 .serch-part {
     float: left;
-    width: 32%;
+    width: 50%;
 }
 .player {
     float: left;
@@ -1251,7 +1251,7 @@ fieldset#body {
     margin-left: 3%;
 }
 .profile_details {
-    padding: 0 5em;
+	padding: 0 15em;
 }
 a.top-sign {
     display: inline-block;
@@ -3297,7 +3297,7 @@ text-decoration:none;
     padding: 9px 0 0;
     width: 40px;
     height: 42px;
-       margin: 0.8em 0 0 1.5em;
+       margin: 0.4em 0 0.4em 1.5em;
 	}
 	.response {
 		float: right;
@@ -3398,7 +3398,7 @@ text-decoration:none;
 	.toggle-btn {
 		font-size: 17px;
 		padding: 9px 0 0;
-		margin: 0.8em 0 0 1.5em;
+		margin: 0.4em 0 0.4em 1.5em;
 	}
 	a.not {
 		font-size:0.3em;
@@ -3468,7 +3468,7 @@ text-decoration:none;
 	.toggle-btn {
 		font-size: 17px;
 		padding: 9px 0 0;
-		margin: 0.8em 0 0 1.5em;
+		margin: 0.4em 0 0.4em 1.5em;
 	}
 	a.not {
 		font-size:0.3em;
@@ -4427,7 +4427,7 @@ text-decoration:none;
 @media (max-width:320px){
 	.toggle-btn {
     font-size: 17px;
-    margin: 0.5em 0 0 0.5em;
+    margin: 0.25em 0 0.25em 0.5em;
 }
 	.modal-dialog.facebook {
 		width: 332px;
@@ -4610,15 +4610,13 @@ text-decoration:none;
 }
 /*add*/
 #search-results{
+	width: 94%;
 	list-style: none;
-	padding: 0px;
-	width: 420px;
 	background: white;
 	position: absolute;
 	margin: 0;
-	top:67px;
-	left: 110px;
-	z-index: 1000 !important;
+	top: 57px;
+	z-index: 11 !important;
 	max-height: 500px;
 	overflow-y: hidden;
    }
@@ -4627,11 +4625,9 @@ text-decoration:none;
    }  
    #search-results li{
 	background: white;
-	padding: 4px;
 	margin-bottom: 1px;
 	color: black;
 	list-style-position: inside;
-	margin-left: 50px;
 	margin-top: 10px;
    }
    #search-results li,.element_search{
@@ -4647,11 +4643,9 @@ text-decoration:none;
 .title_search{
 	color: #000;
 	font-size: 30px;
-	margin-left: 30px;
 }
 .title_search_ar{
 	color: #000000;
 	font-size: 25px;
 	display: block;
-	margin-left: 25px;
 }
