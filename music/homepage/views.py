@@ -9,7 +9,14 @@ from collections import namedtuple
 # Create your views here.
 
 def Homepage(request):
-    return render(request,'homepage/homepage.html')
+    top = models.ArtistSingSong.objects.order_by('-song__nlisten').distinct()[:10]
+    newlest = models.ArtistSingSong.objects.order_by('-song__timeupload').distinct()[:8]
+    other =  models.ArtistSingSong.objects.order_by('?')[:8]
+    return render(request,'homepage/homepage.html',{
+        'top': top,
+        'new': newlest,
+        'other': other
+    })
 
 def Contact(request):
     return render(request,'homepage/contact.html')

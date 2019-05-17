@@ -36,6 +36,10 @@ def index(request, song_id):
 
     likesong = models.ArtistSingSong.objects.filter(Q(artist__pk__exact=mainsong[0].artist.pk) & ~Q(song__pk__exact=mainsong[0].song.pk))[:10]
     
+    if len(list(likesong))  < 1:
+        likesong = models.ArtistSingSong.objects.order_by('?').filter(~Q(song__pk__exact=mainsong[0].song.pk))[:5]
+
+
     return render(request, 'song.html',{
         'title': mainsong[0].song.title,
         'artist': maintitle[len(mainsong[0].song.title) + 1:],

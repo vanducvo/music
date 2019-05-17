@@ -16,6 +16,8 @@ class Song(models.Model):
     lyric = models.TextField()
     producer =  models.ForeignKey(User, on_delete = models.DO_NOTHING)
     genre = models.CharField(max_length = 15, choices = GENRE_TYPES, default ='other')
+    nlisten = models.IntegerField(default=0)
+    timeupload = models.DateTimeField(auto_now_add=True)
 
 #Artist Entity
 class Artist(models.Model):

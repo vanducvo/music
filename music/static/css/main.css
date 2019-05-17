@@ -1,0 +1,248 @@
+
+
+/*//////////////////////////////////////////////////////////////////
+[ FONT ]*/
+
+
+@font-face {
+  font-family: OpenSans-Regular;
+  src: url('../fonts/OpenSans/OpenSans-Regular.ttf'); 
+}
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ RESTYLE TAG ]*/
+.topsong {
+	margin: 0px; 
+	padding: 0px; 
+	box-sizing: border-box;
+}
+
+.topsong body, html {
+	height: 100%;
+	font-family: sans-serif;
+}
+
+/* ------------------------------------ */
+.topsong a {
+	margin: 0px;
+	transition: all 0.4s;
+	-webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+}
+
+.topsong a:focus {
+	outline: none !important;
+}
+
+.topsong a:hover {
+	text-decoration: none;
+}
+
+/* ------------------------------------ */
+.topsong h1,h2,h3,h4,h5,h6 {margin: 0px;}
+
+.topsong p {margin: 0px;}
+
+.topsong ul, li {
+	margin: 0px;
+	list-style-type: none;
+}
+
+
+/* ------------------------------------ */
+.topsong input {
+  display: block;
+	outline: none;
+	border: none !important;
+}
+
+.topsong textarea {
+  display: block;
+  outline: none;
+}
+
+.topsong textarea:focus, input:focus {
+  border-color: transparent !important;
+}
+
+/* ------------------------------------ */
+.topsong button {
+	outline: none !important;
+	border: none;
+	background: transparent;
+}
+
+.topsong button:hover {
+	cursor: pointer;
+}
+
+.topsong iframe {
+	border: none !important;
+}
+
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Utiliti ]*/
+
+
+
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Table ]*/
+
+
+
+
+.wrap-table100 {
+  width: 500px;
+}
+
+table {
+  border-spacing: 1;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+table * {
+  position: relative;
+}
+table td, table th {
+  padding-left: 8px;
+}
+table thead tr {
+  height: 60px;
+  background: #36304a;
+}
+table tbody tr {
+  height: 50px;
+}
+table tbody tr:last-child {
+  border: 0;
+}
+table td, table th {
+  text-align: left;
+}
+table td.l, table th.l {
+  text-align: right;
+}
+table td.c, table th.c {
+  text-align: center;
+}
+table td.r, table th.r {
+  text-align: center;
+}
+
+
+.topsong .table100-head th{
+  font-family: OpenSans-Regular;
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+.topsong tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+.topsong tbody tr {
+  font-family: OpenSans-Regular;
+  font-size: 15px;
+  color: #808080;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+.topsong tbody tr:hover {
+  color: #555555;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.topsong .column1 {
+  width: 800px;
+  padding-left: 20px;
+}
+
+.topsong .column2 {
+  width: 600px;
+}
+
+.topsong .column3 {
+  width: 220px;
+  padding-right: 20px;
+}
+
+
+@media screen and (max-width: 992px) {
+ .topsong table {
+    display: block;
+  }
+ .topsong table > *, table tr, table td, table th {
+    display: block;
+  }
+ .topsong table thead {
+    display: none;
+  }
+ .topsong table tbody tr {
+    height: auto;
+    padding: 37px 0;
+  }
+ .topsong table tbody tr td {
+    padding-left: 40% !important;
+    margin-bottom: 24px;
+  }
+ .topsong table tbody tr td:last-child {
+    margin-bottom: 0;
+  }
+ .topsong table tbody tr td:before {
+    font-family: OpenSans-Regular;
+    font-size: 14px;
+    color: #999999;
+    line-height: 1.2;
+    font-weight: unset;
+    position: absolute;
+    width: 40%;
+    left: 30px;
+    top: 0;
+  }
+ .topsong table tbody tr td:nth-child(1):before {
+    content: "Bài Hát";
+  }
+ .topsong table tbody tr td:nth-child(2):before {
+    content: "Ca Sĩ";
+  }
+ .topsong table tbody tr td:nth-child(3):before {
+    content: "Lượt Nghe";
+  }
+
+
+ .topsong 
+  .column1,
+  .column2,
+  .column3 {
+    width: 100%;
+  }
+
+.topsong  tbody tr {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+ .topsong .container-table100 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}

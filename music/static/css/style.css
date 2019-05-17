@@ -4617,10 +4617,14 @@ text-decoration:none;
 	position: absolute;
 	margin: 0;
 	top:67px;
-	left: 183px;
+	left: 110px;
 	z-index: 1000 !important;
+	max-height: 500px;
+	overflow-y: hidden;
    }
-   
+   #search-results:hover{
+	overflow-y: auto;
+   }  
    #search-results li{
 	background: white;
 	padding: 4px;

@@ -1,1 +1,141 @@
 {% extends "index.html" %}
+{%load static from staticfiles%}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+{% endblock header %}
+{% block content %}
+<div id="page-wrapper">
+    <div class="inner-content">
+
+        <div class="music-left">
+            <!--banner-section-->
+            <div class="banner-section">
+                <div class="banner">
+                    <div class="callbacks_container">
+                        <ul class="rslides callbacks callbacks1" id="slider4">
+                            <li>
+                                <div class="banner-img">
+                                    <img src="{% static 'images/nhomotchieuxuan.jpg' %}" class="img-responsive" alt="">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="banner-img">
+                                    <img src="{% static 'images/comeandgetyourlove.jpg' %}" class="img-responsive"
+                                        alt="">
+                                </div>
+                            </li>
+                            <li>
+                                <div class="banner-img">
+                                    <img src="{% static 'images/vemainhaxua.jpg' %}" class="img-responsive" alt="">
+                                </div>
+
+                                <!-- /w3layouts-agileits -->
+                            </li>
+                        </ul>
+                    </div>
+                    <!--banner-->
+                    <script src="{% static 'js/responsiveslides.min.js' %}"></script>
+                    <script>
+                        // You can also use "$(window).load(function() {"
+                        $(function () {
+                            // Slideshow 4
+                            $("#slider4").responsiveSlides({
+                                auto: true,
+                                pager: true,
+                                nav: true,
+                                speed: 500,
+                                namespace: "callbacks",
+                                before: function () {
+                                    $('.events').append("<li>before event fired.</li>");
+                                },
+                                after: function () {
+                                    $('.events').append("<li>after event fired.</li>");
+                                }
+                            });
+
+                        });
+                    </script>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
+            <!--//End-banner-->
+            <!--albums-->
+            <!-- pop-up-box -->
+
+            <!--//pop-up-box -->
+            <div class="albums">
+                <div class="tittle-head">
+                    <h3 class="tittle">Mới Phát Hành<span class="new glyphicon glyphicon-cloud"></span></h3>
+                    <div class="clearfix"> </div>
+                </div>
+                {% for song in new %}
+                <div class="col-md-3 content-grid">
+                    <a class="play-icon popup-with-zoom-anim" href="/song/{{song.song.pk}}"><img src="{{song.song.image.url}}"
+                            title="allbum-name" style="max-width: 200px; max-height: 200px;"></a>
+                    <a class="button play-icon popup-with-zoom-anim" href="/song/{{song.song.pk}}">{{song.song.title}}</a>
+                    <a class="button play-icon popup-with-zoom-anim">{{song.artist.name}}</a>
+                </div>
+                {% endfor %}
+                
+                <div class="clearfix"> </div>
+            </div>
+            <!--//End-albums-->
+            <!--//discover-view-->
+
+            <div class="albums second">
+                <div class="tittle-head">
+                    <h3 class="tittle">Thịnh Hành<span class="new glyphicon glyphicon-asterisk"></span></h3>
+                    <div class="clearfix"> </div>
+                </div>
+                {% for song in other %}
+                <div class="col-md-3 content-grid">
+                    <a href="/song/{{song.song.pk}}"><img src="{{song.song.image.url}}" title="allbum-name"></a>
+                    <div class="inner-info"><a href="/song/{{song.song.pk}}">
+                            <h5>{{song.song.title}}</h5>
+                            <h5>{{song.artist.name}}</h5>
+                        </a></div>
+                </div>
+                {% endfor %}
+                <div class="clearfix"> </div>
+            </div>
+            <!--//discover-view-->
+        </div>
+        <!--//music-left-->
+        <!--/music-right-->
+        <div class="music-right">
+            <div class="topsong">
+                <div class="table100">
+                    <table>
+                        <thead>
+                            <tr class="table100-head">
+                                <th class="column1">Top Bài hát</th>
+                                <th class="column2">Ca Sĩ</th>
+                                <th class="column3">Lượt Nghe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for song in top %}
+                            <tr class ="clickable-row" data-href="/song/{{song.song.pk}}">
+                                <td class="column1">{{song.song.title}}</td>
+                                <td class="column2">{{song.artist.name}}</td>
+                                <td class="column3">{{song.song.nlisten}}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
+</script>
+{% endblock script %}

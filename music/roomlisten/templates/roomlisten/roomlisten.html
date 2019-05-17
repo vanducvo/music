@@ -313,7 +313,7 @@
 
     #tracks a {
         border-radius: 3px;
-        color: #fff;
+        color: #111;
         cursor: pointer;
         display: inline-block;
         font-size: 2rem;
@@ -323,6 +323,8 @@
         padding: 10px;
         text-decoration: none;
         transition: background .3s ease;
+        background-color: rgba(0, 0, 0, .1);
+
     }
 
     #tracks a:last-child {
@@ -331,7 +333,7 @@
 
     #tracks a:hover,
     #tracks a:active {
-        background-color: rgba(0, 0, 0, .1);
+        background-color: rgba(0, 0, 0, .5);
         color: #fff;
     }
 
@@ -688,6 +690,7 @@
                 extension = audio.canPlayType('audio/mpeg') ? '.mp3' : audio.canPlayType('audio/ogg') ? '.ogg' :
                     '';
                 loadTrack(index);
+                setTimeout(function(){ player.play();}, 1000);
             } else {
                 // boo hoo
                 $('.column').addClass('hidden');
