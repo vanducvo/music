@@ -213,17 +213,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<!---->
 						<div class="col-md-4 login-pop">
 							{% if user.is_authenticated%}
-							<p id="p_usernameid">
-								Xin chào	
-								<a href="#" data-toggle="modal" id="a_username_id"
-									data-target="#Modal_Info"><span>{{ user.username }}</span></a></li>
-								!!!
-							</p>
-							<div id="loginpop"> <a href="{% url 'logout' %}" id="logoutButton"><span>Logout<i
-											class="arrow glyphicon glyphicon-chevron-right"></i></span></a></div>
-							<a href="#" id="a_change_id" data-toggle="modal" data-target="#ChangePass"><span>Đổi mật
-									khẩu</span></a>
-							<!-- Modal_Ifo -->
+							<!---TEST-->
+							  <div class="dropdown" id="loginpop">
+    								<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ user.username }}
+    								<span class="caret"></span></button>
+    								<ul class="dropdown-menu">
+      									<li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal_Info">Thông Tin</a></li>
+      									<li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#ChangePass">Đổi Mật Khẩu</a></li>
+      									<li><a class="dropdown-item" href="{% url 'logout' %}">Đăng Xuất</a></li>
+    								</ul>
+  							</div>
+							<!---->
 							<div id="Modal_Info" class="modal fade" role="dialog">
 								<div class="modal-dialog">
 
