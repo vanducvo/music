@@ -589,8 +589,8 @@
                 song: song,
             },
             success: function(e){
-                if(command === 'addsong' && e.length === 1){
-                    var json = {'id': parseInt(e),'title': l.shift(),'art': l}
+                if(command === 'addsong' && /^[0-9]+$/.test(e)){
+                    var json = {'id': parseInt(e),'title': l.shift(),'art': l};
                     addshowsong(roomname, json);
                 }
             }
